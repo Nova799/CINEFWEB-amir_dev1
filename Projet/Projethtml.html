@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css">
+    <link rel="stylesheet" href="projetcss.css">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+          <div class="col-11 col-sm-10 col-md-10 col-lg-6 col-xl-5 text-center p-0 mt-3 mb-2">
+            <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
+              <h2 id="heading">Sign Up Your User Account</h2>
+              <p>Fill all form field to go to next step</p>
+              <form id="msform" action="traitement.php" method="post" style="background-color:#fff !important;">
+                <!-- progressbar -->
+                <ul id="progressbar">
+                  <li class="active" id="account"><strong>Account</strong></li>
+                  <li id="personal"><strong>Personal</strong></li>
+                  <li id="payment"><strong>Image</strong></li>
+                  <li id="confirm"><strong>Finish</strong></li>
+                </ul>
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+                </div> <br> <!-- fieldsets -->
+                <fieldset>
+                  <div class="form-card">
+                    <div class="row">
+                      <div class="col-7">
+                        <h2 class="fs-title">Informations Personnelles:</h2>
+                      </div>
+                      <div class="col-5">
+                        <h2 class="steps">Etape 1 - 4</h2>
+                      </div>
+                    </div> 
+                    <div class="form-group">
+                        <label for="formation">Intitulé de la formation :</label>
+                        <input type="text" class="form-control" placeholder="Intitulé" id="formation" name="formation" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nom">Nom et Prénoms :</label>
+                        <input type="text" class="form-control" id="nom" name="nom" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="entite">Entité/Direction/Service :</label>
+                        <input type="text" class="form-control" id="entite" name="entite" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="missions">Quelles sont aujourd'hui vos principales missions et activités dans l’entreprise ?</label>
+                        <textarea class="form-control" id="missions" name="missions" rows="4" required></textarea>
+                    </div>
+                  </div> 
+                  <input type="button" name="next" class="next action-button" value="Next" />
+                </fieldset>
+                <fieldset>
+                  <div class="form-card">
+                    <div class="row">
+                      <div class="col-7">
+                        <h2 class="fs-title">Informations Professionnelles:</h2>
+                      </div>
+                      <div class="col-5">
+                        <h2 class="steps">Step 2 - 4</h2>
+                      </div>
+                    </div> 
+                    <div class="form-group">
+                        <label for="missions">Quelles sont aujourd'hui vos principales missions et activités dans l’entreprise ?</label>
+                        <textarea class="form-control" id="missions" name="missions" rows="4" required></textarea>
+                      </div>
+                    
+                      <div class="form-group">
+                        <label for="formation-precedente">Avez-vous déjà suivi une formation sur ce thème ou un thème similaire ?</label>
+                        <div class="form-check">
+                          <input type="radio" class="form-check-input" id="oui-formation" name="formation-precedente" value="oui" required>
+                          <label class="form-check-label" for="oui-formation">Oui</label>
+                        </div>
+                        <div class="form-check">
+                          <input type="radio" class="form-check-input" id="non-formation" name="formation-precedente" value="non" required>
+                          <label class="form-check-label" for="non-formation">Non</label>
+                        </div>
+                      </div>
+                    
+                      <div class="form-group">
+                        <label for="formation-details">Si oui, laquelle et à quelle date ?</label>
+                        <input type="text" class="form-control" id="formation-details" name="formation-details">
+                      </div>
+                    
+                      <div class="form-group">
+                        <label for="demande-personnelle">Avez-vous demandé personnellement à suivre cette formation ?</label>
+                        <div class="form-check">
+                          <input type="radio" class="form-check-input" id="oui-demande" name="demande-personnelle" value="oui" required>
+                          <label class="form-check-label" for="oui-demande">Oui</label>
+                        </div>
+                        <div class="form-check">
+                          <input type="radio" class="form-check-input" id="non-demande" name="demande-personnelle" value="non" required>
+                          <label class="form-check-label" for="non-demande">Non</label>
+                        </div>
+                      </div>
+                    
+                      <div class="form-group">
+                        <label for="difficultes">Si oui, quelles difficultés rencontrez-vous pour lesquelles vous souhaitez suivre cette formation ?</label>
+                        <textarea class="form-control" id="difficultes" name="difficultes" rows="4"></textarea>
+                      </div>
+                    
+                      <div class="form-group">
+                        <label for="conseil">Si non, qui vous a conseillé cette formation ?</label>
+                        <input type="text" class="form-control" id="conseil" name="conseil">
+                      </div>
+
+
+                  </div> 
+                  <input type="button" name="next" class="next action-button" value="Next" /> <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                </fieldset>
+                <fieldset>
+                  <div class="form-card">
+                    <div class="row">
+                      <div class="col-7">
+                        <h2 class="fs-title">Informations Complémentaires:</h2>
+                      </div>
+                      <div class="col-5">
+                        <h2 class="steps">Step 3 - 4</h2>
+                      </div>
+                    </div> 
+                    <div class="form-group">
+                        <label for="objectifs">Suivez-vous cette formation dans l'objectif de prise de poste ou sensibilisation ?</label>
+                        <div class="form-check">
+                          <input type="radio" class="form-check-input" id="oui-objectifs" name="objectifs" value="oui" required>
+                          <label class="form-check-label" for="oui-objectifs">Oui</label>
+                        </div>
+                        <div class="form-check">
+                          <input type="radio" class="form-check-input" id="non-objectifs" name="objectifs" value="non" required>
+                          <label class="form-check-label" for="non-objectifs">Non</label>
+                        </div>
+                      </div>
+                    
+                      <div class="form-group">
+                        <label for="attentes">Qu'attendez-vous en priorité de cette formation ?</label><br>
+                        <div class="form-check form-check-inline">
+                          <input type="checkbox" class="form-check-input" id="echanges" name="attentes" value="echanges">
+                          <label class="form-check-label" for="echanges">Des échanges de pratiques</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input type="checkbox" class="form-check-input" id="perfectionnement" name="attentes" value="perfectionnement">
+                          <label class="form-check-label" for="perfectionnement">Un perfectionnement</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input type="checkbox" class="form-check-input" id="nouveautes" name="attentes" value="nouveautes">
+                          <label class="form-check-label" for="nouveautes">Des nouveautés sur la fonction</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input type="checkbox" class="form-check-input" id="conseils" name="attentes" value="conseils">
+                          <label class="form-check-label" for="conseils">Des conseils individualisés</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                          <input type="checkbox" class="form-check-input" id="rappels" name="attentes" value="rappels">
+                          <label class="form-check-label" for="rappels">Des rappels techniques</label>
+                        </div>
+                      </div>
+                    
+                      <div class="form-group">
+                        <label for="autres-priorites">Vos Autres priorités:</label>
+                        <textarea class="form-control" id="autres-priorites" name="autres-priorites" rows="4"></textarea>
+                      </div>
+                    
+                      <div class="form-group">
+                        <label for="objectifs-op">Quels sont vos trois objectifs opérationnels à atteindre à l'issue de cette formation ?</label>
+                        <ol>
+                          <li>
+                            <input type="text" class="form-control" id="objectif1" name="objectif1" required>
+                          </li>
+                          <li>
+                            <input type="text" class="form-control" id="objectif2" name="objectif2" required>
+                          </li>
+                          <li>
+                            <input type="text" class="form-control" id="objectif3" name="objectif3" required>
+                          </li>
+                        </ol>
+                      </div>
+                    
+                      <div class="form-group">
+                        <label for="cas-concrets">Avez-vous des cas concrets (dossiers) pour lesquels vous souhaiteriez des réponses durant la formation ? Merci de nous les envoyer par mail ou de les amener en formation.</label>
+                        <div class="form-check">
+                          <input type="radio" class="form-check-input" id="oui-cas" name="cas-concrets" value="oui" required>
+                          <label class="form-check-label" for="oui-cas">Oui</label>
+                        </div>
+                        <div class="form-check">
+                          <input type="radio" class="form-check-input" id="non-cas" name="cas-concrets" value="non" required>
+                          <label class="form-check-label" for="non-cas">Non</label>
+                        </div>
+                      </div>
+                    
+                      <div class="form-group">
+                        <label for="remarques">Autres remarques:</label>
+                        <textarea class="form-control" id="remarques" name="remarques" rows="4"></textarea>
+                      </div>
+                    
+                      <div class="form-group">
+                        <label for="telephone">Téléphone:</label>
+                        <input type="tel" class="form-control" id="telephone" name="telephone" required>
+                      </div>
+                    
+                      <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                      </div>
+                    
+                      <div class="form-group">
+                        <a href="http://www.cinef-bj.com" target="_blank">Site web CINEF</a>
+                      </div>
+                  </div> <input type="submit" name="next" class="submit action-button" value="Submit" />
+                   <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                </fieldset>
+                <fieldset>
+                  <div class="form-card">
+                    <div class="row">
+                      <div class="col-7">
+                        <h2 class="fs-title">Finish:</h2>
+                      </div>
+                      <div class="col-5">
+                        <h2 class="steps">Step 4 - 4</h2>
+                      </div>
+                    </div> <br><br>
+                    <h2 class="purple-text text-center"><strong>SUCCESS !</strong></h2> <br>
+                    <div class="row justify-content-center">
+                      <div class="col-3"> <img src="https://i.imgur.com/GwStPmg.png" class="fit-image"> </div>
+                    </div> <br><br>
+                    <div class="row justify-content-center">
+                      <div class="col-7 text-center">
+                        <h5 class="purple-text text-center">You Have Successfully Signed Up</h5>
+                      </div>
+                    </div>
+                    
+      
+                  </div>
+                </fieldset>
+
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script src="projet.js"></script>
+</body>
+</html>
