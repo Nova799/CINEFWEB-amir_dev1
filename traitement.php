@@ -1,4 +1,5 @@
 <?php
+
 // Connexion à la base de données
 $servername = "localhost";
 $username = "root";
@@ -70,16 +71,16 @@ if ($result->num_rows > 0) {
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
-  <link href="./Tables _ Data - NiceAdmin Bootstrap Template_files/bootstrap.min.css" rel="stylesheet">
-  <link href="./Tables _ Data - NiceAdmin Bootstrap Template_files/bootstrap-icons.css" rel="stylesheet">
-  <link href="./Tables _ Data - NiceAdmin Bootstrap Template_files/boxicons.min.css" rel="stylesheet">
-  <link href="./Tables _ Data - NiceAdmin Bootstrap Template_files/quill.snow.css" rel="stylesheet">
-  <link href="./Tables _ Data - NiceAdmin Bootstrap Template_files/quill.bubble.css" rel="stylesheet">
-  <link href="./Tables _ Data - NiceAdmin Bootstrap Template_files/remixicon.css" rel="stylesheet">
-  <link href="./Tables _ Data - NiceAdmin Bootstrap Template_files/style.css" rel="stylesheet">
+  <link href="asset/js/bootstrap.min.css" rel="stylesheet">
+  <link href="asset/js/bootstrap-icons.css" rel="stylesheet">
+  <link href="asset/js/boxicons.min.css" rel="stylesheet">
+  <link href="asset/js/quill.snow.css" rel="stylesheet">
+  <link href="asset/js/quill.bubble.css" rel="stylesheet">
+  <link href="asset/js/remixicon.css" rel="stylesheet">
+  <link href="asset/js/style.css" rel="stylesheet">
 
   <!-- Template Main CSS File -->
-  <link href="./Tables _ Data - NiceAdmin Bootstrap Template_files/style(1).css" rel="stylesheet">
+  <link href="asset/js/style(1).css" rel="stylesheet">
 
   <!-- =======================================================
   * Template Name: NiceAdmin
@@ -284,17 +285,17 @@ if ($result->num_rows > 0) {
   </main><!-- End #main -->
 
   <!-- Vendor JS Files -->
-  <script src="./Tables _ Data - NiceAdmin Bootstrap Template_files/apexcharts.min.js"></script>
-  <script src="./Tables _ Data - NiceAdmin Bootstrap Template_files/bootstrap.bundle.min.js"></script>
-  <script src="./Tables _ Data - NiceAdmin Bootstrap Template_files/chart.umd.js"></script>
-  <script src="./Tables _ Data - NiceAdmin Bootstrap Template_files/echarts.min.js"></script>
-  <script src="./Tables _ Data - NiceAdmin Bootstrap Template_files/quill.min.js"></script>
-  <script src="./Tables _ Data - NiceAdmin Bootstrap Template_files/simple-datatables.js"></script>
-  <script src="./Tables _ Data - NiceAdmin Bootstrap Template_files/tinymce.min.js"></script>
-  <script src="./Tables _ Data - NiceAdmin Bootstrap Template_files/validate.js"></script>
+  <script src="asset/js/apexcharts.min.js"></script>
+  <script src="asset/js/bootstrap.bundle.min.js"></script>
+  <script src="asset/js/chart.umd.js"></script>
+  <script src="asset/js/echarts.min.js"></script>
+  <script src="asset/js/quill.min.js"></script>
+  <script src="asset/js/simple-datatables.js"></script>
+  <script src="asset/js/tinymce.min.js"></script>
+  <script src="asset/js/validate.js"></script>
 
   <!-- Template Main JS File -->
-  <script src="./Tables _ Data - NiceAdmin Bootstrap Template_files/main.js"></script>
+  <script src="asset/js/main.js"></script>
 
   <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-P7JSYB1CSP"></script>
   <script>
@@ -352,7 +353,7 @@ if (isset($_POST['rejet']) && isset($_POST['id'])) {
   ?>
   
   <script>
-    location.href = location.origin + "/CINEFWEB/";
+    location.href = location.origin + "/Impact/";
   </script>
 
   <?php
