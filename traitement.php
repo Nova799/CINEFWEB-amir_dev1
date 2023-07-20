@@ -352,7 +352,7 @@ if (isset($_POST['rejet']) && isset($_POST['id'])) {
   ?>
   
   <script>
-    location.href = location.origin + "/Impact/";
+    location.href = location.origin + "/CINEFWEB/";
   </script>
 
   <?php
