@@ -9,8 +9,7 @@
     <meta content="" name="description">
     <meta content="" name="keywords">
 
-    <?php include_once('layout_css.php') ?>
-
+    <?php include 'layout_css.php'?>
 
     <style>
         .dropdown-menu {
@@ -25,6 +24,19 @@
             color: black;
             /* Ajoutez la couleur de texte souhaitée ici */
         }
+
+        #loading-img{
+display:none;
+}
+.response_msg{
+margin-top:10px;
+font-size:13px;
+background:#E5D669;
+color:#ffffff;
+width:250px;
+padding:3px;
+display:none;
+}
     </style>
 
 
@@ -51,7 +63,7 @@
   </section> --><!-- End Top Bar -->
 
     <!-- START HEADER -->
-        <?php include_once('header.php') ?>
+        <?php include './header.php'?>
     <!-- End Header -->
 
 
@@ -178,13 +190,13 @@
 
                         <?php
 
-                            if (isset($_POST['submit']) && isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['user_email']) && isset($_POST['phone'])) {
-                                /* include('./config/conn.php'); */
-                                $conn = mysqli_connect("localhost", "root", "", "formulaire");
-                                mysqli_query($conn, "INSERT INTO newsletters(nom, prenom, email, phone) VALUES ('" . $_POST['nom'] . "', '" . $_POST['prenom'] . "', '" . $_POST['user_email'] . "', '" . $_POST['phone'] . "')");
-                            }
+if (isset($_POST['submit']) && isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['user_email']) && isset($_POST['phone'])) {
+    /* include('./config/conn.php'); */
+    $conn = mysqli_connect("localhost", "root", "", "formulaire");
+    mysqli_query($conn, "INSERT INTO newsletters(nom, prenom, email, phone) VALUES ('" . $_POST['nom'] . "', '" . $_POST['prenom'] . "', '" . $_POST['user_email'] . "', '" . $_POST['phone'] . "')");
+}
 
-                        ?>
+?>
 
                         <p class="text-center text-red mt-2"> </p>
 
@@ -228,10 +240,6 @@
                                 </div>
                                 <div class="modal-body">
 
-
-
-
-
                                     <title>
                                     </title>
                                     <meta content="summary_large_image" name="twitter:card">
@@ -243,7 +251,7 @@
                                     <meta content="" name="description">
 
                                     <meta content="width=device-width" name="viewport">
-                                    <link href="./CINEF SAS Formation Professionnelle Continue_files/css" rel="stylesheet" type="text/css">
+                                    <link href="./assets/css/style_css.css" rel="stylesheet" type="text/css">
                                     <style>
                                         .bee-row,
                                         .bee-row-content {
@@ -444,7 +452,7 @@
                                             margin-bottom: 16px
                                         }
                                     </style>
-                                    <script async="" defer="" src="./CINEF SAS Formation Professionnelle Continue_files/api.js.téléchargement">
+                                    <script async="" defer="" src="./assets/js/api.js">
                                     </script>
                                     <script>
                                         function onSubmit(token) {
@@ -811,7 +819,7 @@
 
     <!--  <main id="main">
 
-   
+
 
     <!-- ======= Contact Section ======= -->
     <section id="contact" class="contact background-color: #cbe4d1 !important;" ;>
@@ -862,29 +870,30 @@
 
                 </div>
 
-                <div class="col-lg-8">
-                    <form action="forms/contact.php" method="post" role="form" class="php-email-form">
-                        <div class="row">
-                            <div class="col-md-6 form-group">
-                                <input type="text" name="name" class="form-control" id="name" placeholder="Nom" required>
-                            </div>
-                            <div class="col-md-6 form-group mt-3 mt-md-0">
-                                <input type="email" class="form-control" name="email" id="email" placeholder="Email" required>
-                            </div>
+                <div class="col-lg-8"> <!-- ./forms/contact.php -->
+                <form action="./forms/contact.php" method="post" role="form" class="php-email-form">
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                        <input type="text" name="name" class="form-control" id="name" placeholder="Nom" required>
                         </div>
-                        <div class="form-group mt-3">
-                            <input type="text" class="form-control" name="subject" id="subject" placeholder="Sujet" required>
+                        <div class="col-md-6 form-group mt-3 mt-md-0">
+                        <input type="email" class="form-control" name="email" id="email" placeholder="Email" required>
                         </div>
-                        <div class="form-group mt-3">
-                            <textarea class="form-control" name="message" rows="7" placeholder="Message" required></textarea>
-                        </div>
-                        <div class="my-3">
-                            <div class="loading">Loading</div>
-                            <div class="error-message"></div>
-                            <div class="sent-message">Votre message est envoyé avec succès! Merci</div>
-                        </div>
-                        <div class="text-center"><button type="submit">Envoyer</button></div>
-                    </form>
+                    </div>
+                    <div class="form-group mt-3">
+                        <input type="text" class="form-control" name="subject" id="subject" placeholder="Sujet" required>
+                    </div>
+                    <div class="form-group mt-3">
+                        <textarea class="form-control" name="message" rows="7" placeholder="Message" required></textarea>
+                    </div>
+                    <div class="my-3">
+                        <div class="loading">Loading</div>
+                        <div class="error-message"></div>
+                        <div class="sent-message">Votre message est envoyé avec succès! Merci</div>
+                    </div>
+                    <div class="text-center"><button type="submit" id="submit">Envoyer</button></div>
+                </form>
+                    <div class="response_msg"></div>
                 </div><!-- End Contact Form -->
 
             </div>
@@ -908,8 +917,10 @@
     <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
     <div id="preloader"></div>
+    
 
-    <?php include_once('layout_js.php') ?>
+    <?php include 'layout_js.php'?>
+
 
 </body>
 

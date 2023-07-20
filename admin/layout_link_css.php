@@ -14,7 +14,7 @@
   <!-- inject:css -->
   <link rel="stylesheet" href="css/vertical-layout-light/style.css">
   <!-- endinject -->
-  <link rel="shortcut icon" href="images/logo_cinef.png">
+  <link rel="shortcut icon" href="images/favicon.ico">
   <style type="text/css">
     
     .sidebar-dark .sidebar .nav:not(.sub-menu) > .nav-item .nav-link[aria-expanded="true"] {
