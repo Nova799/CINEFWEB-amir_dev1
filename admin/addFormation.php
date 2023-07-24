@@ -90,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
   $code = $_POST['code'];
   $descr = $_POST['descr'];
 
-  $conn = mysqli_connect("localhost", "nova", "cnov @", "essai");
+  $conn = mysqli_connect("localhost", "root", "", "formulaire");
 
   // Vérifier la connexion
   if (!$conn) {

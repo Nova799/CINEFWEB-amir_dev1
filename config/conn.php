@@ -1,4 +1,8 @@
 <?php
+
+// vARIABLE GLOBAL
+$email_send = "info@cinef-bj.com";
+
 // Connexion à la base de données
 function conn(){
     return mysqli_connect("localhost", "root", "", "formulaire");

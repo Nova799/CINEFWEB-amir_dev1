@@ -1,54 +1,43 @@
 <?php
+require('./config/conn.php');
+require('./functions.php');
 
-// Connexion à la base de données
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "formulaire";
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+if ( isset($_POST['next_finish'])  )
+{
+    $data_from_formulaire = array();
 
-// Vérifier la connexion
-if ($conn->connect_error) {
-  die("Erreur de connexion à la base de données : " . $conn->connect_error);
-}
+    foreach($_POST as $data_row)
+    {
+      $data_row = valid_data($data_row);
+      echo $data_row;
+      
+      array_push($data_from_formulaire,$data_row);
+    }
 
-// Requête SQL pour récupérer les données du formulaire
+ 
+    $intitule_formation = $data_from_formulaire[0];
+    $nom = $data_from_formulaire[1];
+    $entite = $data_from_formulaire[2];
+    $missions = $data_from_formulaire[3];
+    $formation_prece = $data_from_formulaire[4];
+    $formation_detail = $data_from_formulaire[5];
+    $demande_perso = $data_from_formulaire[6];
+    $difficultes = $data_from_formulaire[7];
+    $conseil = $data_from_formulaire[8];
+    $objectifs = $data_from_formulaire[9];
+    $attentes = $data_from_formulaire[10];
+    $autres_priorite = $data_from_formulaire[11];
+    $objectif1 = $data_from_formulaire[12];
+    $objectif2 = $data_from_formulaire[13];
+    $objectif3 = $data_from_formulaire[14];
+    // $cas_concrets = $data_from_formulaire[15];
+    // $remarques = $data_from_formulaire[16];
+    // $telephone = $data_from_formulaire[17];
+    // $email = $data_from_formulaire[18];
 
-$sql = "SELECT * FROM nom_table ORDER BY id DESC LIMIT 1";
-if (isset($_GET['id'])) {
-  $sql = "SELECT * FROM nom_table WHERE id = ".$_GET['id'];
-}
-
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-  // Afficher les données
-  $row = $result->fetch_assoc();
-  $id = $row['id'];
-  $formation = $row['formation'];
-  $nom = $row['nom'];
-  $entite = $row['entite'];
-  $missions = $row['missions'];
-  $formation_precedente = $row['formation_precedente'];
-  $formation_details = $row['formation_details'];
-  $demande_personnelle = $row['demande_personnelle'];
-  $difficultes = $row['difficultes'];
-  $conseil = $row['conseil'];
-  $objectifs = $row['objectifs'];
-  $attentes = $row['attentes'];
-  $autres_priorites = $row['autres_priorites'];
-  $objectif1 = $row['objectif1'];
-  $objectif2 = $row['objectif2'];
-  $objectif3 = $row['objectif3'];
-  $cas_concrets = $row['cas_concrets'];
-  $remarques = $row['remarques'];
-  $telephone = $row['telephone'];
-  $email = $row['email'];
-} else {
-  echo "Aucune donnée trouvée.";
-}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -57,30 +46,39 @@ if ($result->num_rows > 0) {
 
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Tables / Data - NiceAdmin Bootstrap Template</title>
+  <title> CINEF | Formulaire de pre-formation </title>
   <meta name="robots" content="noindex, nofollow">
   <meta content="" name="description">
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-  <link href="assets/img/favicon.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link rel="shortcut icon" href="./assets/img/favicon.ico">
+
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com/" rel="preconnect">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
-  <link href="asset/js/bootstrap.min.css" rel="stylesheet">
-  <link href="asset/js/bootstrap-icons.css" rel="stylesheet">
-  <link href="asset/js/boxicons.min.css" rel="stylesheet">
-  <link href="asset/js/quill.snow.css" rel="stylesheet">
-  <link href="asset/js/quill.bubble.css" rel="stylesheet">
-  <link href="asset/js/remixicon.css" rel="stylesheet">
-  <link href="asset/js/style.css" rel="stylesheet">
+  <link href="assets/table_customize/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/table_customize/css/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/table_customize/css/boxicons.min.css" rel="stylesheet">
+  <link href="assets/table_customize/css/quill.snow.css" rel="stylesheet">
+  <link href="assets/table_customize/css/quill.bubble.css" rel="stylesheet">
+  <link href="assets/table_customize/css/remixicon.css" rel="stylesheet">
+  <link href="assets/table_customize/css/style.css" rel="stylesheet">
 
   <!-- Template Main CSS File -->
-  <link href="asset/js/style(1).css" rel="stylesheet">
+  <link href="assets/table_customize/css/style(1).css" rel="stylesheet">
+
+  <style>
+   
+   .optionDelete {
+     display: none;
+     transition: all .4s;
+   }
+
+ </style>
 
   <!-- =======================================================
   * Template Name: NiceAdmin
@@ -103,7 +101,7 @@ if ($result->num_rows > 0) {
 
     <section class="section">
       <div class="row">
-      <center><img src="Logo blanc.png " width='100'></center>
+      <center><img src="./assets/img/logo_blanc.png" width='100'></center>
         <div class="col-lg-12">
 
           <div class="card">
@@ -114,20 +112,7 @@ if ($result->num_rows > 0) {
               <div class="datatable-wrapper datatable-loading no-footer sortable searchable fixed-columns">
                 <div class="datatable-container">
                   <table class="table datatable datatable-table">
-                    <!-- <thead>
-                      <tr>
-                        <th data-sortable="true" style="width: 5.654174884944116%;"><a href="tables-data.html#"
-                            class="datatable-sorter">#</a></th>
-                        <th data-sortable="true" style="width: 28.007889546351084%;"><a href="tables-data.html#"
-                            class="datatable-sorter">Name</a></th>
-                        <th data-sortable="true" style="width: 37.738330046022355%;"><a href="tables-data.html#"
-                            class="datatable-sorter">Position</a></th>
-                        <th data-sortable="true" style="width: 9.270216962524655%;"><a href="tables-data.html#"
-                            class="datatable-sorter">Age</a></th>
-                        <th data-sortable="true" style="width: 19.32938856015779%;"><a href="tables-data.html#"
-                            class="datatable-sorter">Start Date</a></th>
-                      </tr>
-                    </thead> -->
+                   
                     <tbody>
 
 
@@ -149,28 +134,32 @@ if ($result->num_rows > 0) {
                             padding: 8px;
                           }
 
+                          tr{
+                            width: 50%;
+                          }
+
                           th {
                             background-color: #f2f2f2;
                           }
                         </style>
                       </head>
 
-                      <body class="pt-4"> 
-                        <h1 class="pt-4">Intitulé de la formation : <span style="color: #ff0000">  <?= $formation ?> </span> </h1>
+                      <tbody class="pt-4"> 
+                        <h1 class="pt-4">Intitulé de la formation : <span style="color: #ff0000">  <?= $intitule_formation ?> </span> </h1>
                         <h5 class="card-title">Vérification des Informations</h5>
                         <h1></h1>
                         <table>
-                          <tr>
+                          <!-- <tr>
                             <th>Questionnaires</th>
                             <th>Réponses</th>
-                          </tr>
+                          </tr> -->
                           <?php
                           echo "<tr>";
                           echo "<td colspan='2' style='color: red;'><h2><center>Informations Personnelles:</center></h2></td>";
 
                           echo "</tr>";
                           echo "<tr>";
-                          echo "<td>Nom et Prénoms :</td><td>" . $nom . "</td>";
+                          echo "<td class='col-6'>Nom et Prénoms :</td><td>" . $nom . "</td>";
                           echo "</tr>";
                           echo "<tr>";
                           echo "<td>Entité/Direction/Service :</td><td>" . $entite . "</td>";
@@ -181,13 +170,13 @@ if ($result->num_rows > 0) {
                           echo "<tr>";
                           echo "<td colspan='2' style='color: red;'><h2><center>Informations Professionnelles:</center></h2></td>";
                           echo "</tr>";
-                          echo "<td>Avez-vous déjà suivi une formation sur ce thème ou un thème similaire ?</td><td>" . $formation_precedente . "</td>";
+                          echo "<td>Avez-vous déjà suivi une formation sur ce thème ou un thème similaire ?</td><td>" . $formation_prece . "</td>";
                           echo "</tr>";
                           echo "<tr>";
-                          echo "<td>Si oui, laquelle et à quelle date ?</td><td>" . $formation_details . "</td>";
+                          echo "<td>Si oui, laquelle et à quelle date ?</td><td>" . $formation_detail . "</td>";
                           echo "</tr>";
                           echo "<tr>";
-                          echo "<td>Avez-vous demandé personnellement à suivre cette formation ?</td><td>" . $demande_personnelle . "</td>";
+                          echo "<td>Avez-vous demandé personnellement à suivre cette formation ?</td><td>" . $demande_perso . "</td>";
                           echo "</tr>";
                           echo "<tr>";
                           echo "<td>Si oui, quelles difficultés rencontrez-vous pour lesquelles vous souhaitez suivre cette formation ?</td><td>" . $difficultes . "</td>";
@@ -204,74 +193,47 @@ if ($result->num_rows > 0) {
                           echo "<td>Qu'attendez-vous en priorité de cette formation ?</td><td>" . $attentes . "</td>";
                           echo "</tr>";
                           echo "<tr>";
-                          echo "<td>Vos Autres priorités:</td><td>" . $autres_priorites . "</td>";
+                          echo "<td>Vos Autres priorités:</td><td>" . $autres_priorite . "</td>";
                           echo "</tr>";
                           echo "<tr>";
-                          echo "<td>Quels sont vos trois objectifs opérationnels à atteindre à l'issue de cette formation ?</td><td>" . $objectif1 . "<br>" . $objectif2 . "<br>" . $objectif3 . "</td>";
+                          echo "<td>Quels sont vos trois objectifs opérationnels à atteindre à l'issue de cette formation ?</td><td> <li>" . $objectif1 . "</li><br><li>" . $objectif2 . "</li><br><li>" . $objectif3 . "</li></td>";
                           echo "</tr>";
                           echo "<tr>";
-                          echo "<td>Avez-vous des cas concrets (dossiers) pour lesquels vous souhaiteriez des réponses durant la formation ? Merci de nous les envoyer par mail ou de les amener en formation.</td><td>" . $cas_concrets . "</td>";
+                          echo "<td>Avez-vous des cas concrets (dossiers) pour lesquels vous souhaiteriez des réponses durant la formation ? Merci de nous les envoyer par mail ou de les amener en formation.</td><td>" . $_POST['cas-concrets'] . "</td>";
                           echo "</tr>";
                           echo "<tr>";
-                          echo "<td>Autres remarques:</td><td>" . $remarques . "</td>";
+                          echo "<td>Autres remarques:</td><td>" . $_POST['remarques'] . "</td>";
                           echo "</tr>";
                           echo "<tr>";
-                          echo "<td>Téléphone:</td><td>" . $telephone . "</td>";
+                          echo "<td>Téléphone:</td><td>" . $_POST['telephone']. "</td>";
                           echo "</tr>";
                           echo "<tr>";
-                          echo "<td>Email:</td><td>" . $email . "</td>";
+                          echo "<td>Email:</td><td>" . $_POST['email'] . "</td>";
                           echo "</tr>";
 
                           ?>
                         </table>
 
 
-
-
-
-
-
                     </tbody>
                   </table>
                 </div>
                 <div class="datatable-bottom text-center">
-                <?php if (!isset($_GET['id'])) { ?>            
-                  <form action="" method="post" id='html'>
-                    <?php
-                    // Connexion à la base de données
-                    $servername = "localhost";
-                    $username = "root";
-                    $password = "";
-                    $dbname = "formulaire";
-
-                    $conn = new mysqli($servername, $username, $password, $dbname);
-
-                    // Vérifier la connexion
-                    if ($conn->connect_error) {
-                      die("Erreur de connexion à la base de données : " . $conn->connect_error);
-                    }
-
-                    // Requête SQL pour récupérer les données du formulaire
-                    $sql = "SELECT * FROM nom_table ORDER BY id DESC LIMIT 1";
-
-                    $result = $conn->query($sql);
-
-                    if ($result->num_rows > 0) {
-                      // Afficher les données
-                      $row = $result->fetch_assoc();
-                      $id = $row['id'];
-                    }
-                    ?>
-                    <input type="hidden" name="id" value="<?= $id; ?>">
-                    <button type="button" class="btn btn-success" onclick="document.getElementById('html').innerHTML = '<h3>Vos informations ont été envoyées avec succès.</h3>';">Confirmer</button>
-                    <button type="submit" class="btn btn-danger" name='rejet'>Annuler</button>
+                  <form action="" class="submit-form" method="post" id='html'>
+                    
+                    <button type="button" id="btn_confi" class="btn-confirm btn btn-success">Confirmer </button>
+                    <button type="submit" id="btn_rejet" class="btn btn-danger" name='rejet'><a style="text-decoration: none; color:white" href="./formulairepreformation.php">Annuler</a></button>
+                          
                   </form>
-                  <?php }else{
-                    ?>
-                    <button class='btn btn-success' onclick='window.print()'>Télécharger</button>
-                    <?php
-                  } ?>
-                  </div>
+
+                  <form action="" class="pt-3" method="post" id='html'>
+                    <a href="./index.php" >
+                      <button type="button" id="btn_accueil" class="btn btn-success"> Retour A l'accueil </button>
+                    </a>
+                  </form>
+
+                  
+                </div>
               </div>
               <!-- End Table with stripped rows -->
 
@@ -285,20 +247,40 @@ if ($result->num_rows > 0) {
   </main><!-- End #main -->
 
   <!-- Vendor JS Files -->
-  <script src="asset/js/apexcharts.min.js"></script>
-  <script src="asset/js/bootstrap.bundle.min.js"></script>
-  <script src="asset/js/chart.umd.js"></script>
-  <script src="asset/js/echarts.min.js"></script>
-  <script src="asset/js/quill.min.js"></script>
-  <script src="asset/js/simple-datatables.js"></script>
-  <script src="asset/js/tinymce.min.js"></script>
-  <script src="asset/js/validate.js"></script>
+  <script src="assets/table_customize/js/apexcharts.min.js"></script>
+  <script src="assets/table_customize/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/table_customize/js/chart.umd.js"></script>
+  <script src="assets/table_customize/js/echarts.min.js"></script>
+  <script src="assets/table_customize/js/quill.min.js"></script>
+  <script src="assets/table_customize/js/simple-datatables.js"></script>
+  <script src="assets/table_customize/js/tinymce.min.js"></script>
+  <script src="assets/table_customize/js/validate.js"></script>
 
   <!-- Template Main JS File -->
-  <script src="asset/js/main.js"></script>
+  <script src="assets/table_customize/js/main.js"></script>
+  <script src="assets/jquery-3.2.1.min.js"></script>
+
+  
 
   <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-P7JSYB1CSP"></script>
   <script>
+
+    $('.btn-confirm').click(function() {
+      $.ajax({
+        type: "POST",
+        url: "functions.php",
+        data: { data_from_formulaire: <?php echo json_encode($data_from_formulaire)  ?> }
+      }).done(function( msg ) {
+        alert( "Donnee enregistree avec succees " + msg );
+        
+              document.getElementById('btn_confi').className = 'optionDelete';
+              document.getElementById('btn_rejet').className = 'optionDelete';
+       
+              document.getElementById('btn_accueil').classList.remove = 'optionDelete';
+ 
+        });
+    });
+  
     if (window.self == window.top) {
       window.dataLayer = window.dataLayer || [];
 
@@ -331,32 +313,14 @@ if ($result->num_rows > 0) {
 
 </body>
 
-</html>
-<?php
-// Connexion à la base de données
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "formulaire";
+<?php }
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+else {
 
-// Vérifier la connexion
-if ($conn->connect_error) {
-  die("Erreur de connexion à la base de données : " . $conn->connect_error);
-}
-
-if (isset($_POST['rejet']) && isset($_POST['id'])) {
-  echo $_POST['id'];
-  $sql = "DELETE FROM nom_table WHERE id = " . $_POST['id'];
-  $conn->query($sql);
-  ?>
+  echo ("Une erreur s'est produite ");
   
-  <script>
-    location.href = location.origin + "/Impact/";
-  </script>
-
-  <?php
 }
 
 ?>
+
+</html>

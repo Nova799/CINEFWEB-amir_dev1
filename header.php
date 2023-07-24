@@ -11,9 +11,10 @@
 
 
         <ul>
-            <li><a href="#hero">Accueil</a></li>
-            <li>
+            <li><a href="https://pecb.com/"> PECB </a></li>
 
+            <li><a href="./index.php">Accueil</a></li>
+            <li>
                 <div class="dropdown">
                     <button class="btn btn-none" type="button" data-bs-toggle="dropdown" aria-expanded="true">
                         <a href="#main">A propos</a>
@@ -24,6 +25,7 @@
                     </ul>
                 </div>
             </li>
+            <li><a href="./portfolio.php"> Port Folio </a></li>
 
             <li>
 

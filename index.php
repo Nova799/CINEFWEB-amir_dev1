@@ -5,11 +5,11 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title> CINEF </title>
+    <title> FORMATION PRO ET CONTINUE </title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
-    <?php include 'layout_css.php'?>
+    <?php include 'layout_css.php' ?>
 
     <style>
         .dropdown-menu {
@@ -25,18 +25,18 @@
             /* Ajoutez la couleur de texte souhaitée ici */
         }
 
-        #loading-img{
-display:none;
-}
-.response_msg{
-margin-top:10px;
-font-size:13px;
-background:#E5D669;
-color:#ffffff;
-width:250px;
-padding:3px;
-display:none;
-}
+        .btn-sub {
+            background: white;
+            color: #1a5c40;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .btn-sub:hover {
+            color: white;
+            background: black;
+        }
+
     </style>
 
 
@@ -63,7 +63,7 @@ display:none;
   </section> --><!-- End Top Bar -->
 
     <!-- START HEADER -->
-        <?php include './header.php'?>
+    <?php include 'header.php' ?>
     <!-- End Header -->
 
 
@@ -96,9 +96,9 @@ display:none;
     </section>
     <!-- End Hero Section -->
     <!--services section start -->
-    <div id="services" class="what_we_do_section layout_padding top-0 py-5">
+    <div id="services" class="what_we_do_section layout_padding top-0 py-3">
         <div class="my-4">&emsp;</div>
-        <div class="container">
+        <div class="container mb-5">
             <h1 class="what_taital text-center"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
                     <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" d="M5 9h14M5 15h14"></path>
                 </svg>NOS SERVICES<svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
@@ -169,7 +169,7 @@ display:none;
     <!--services section end -->
     <!-- Newsletter Start -->
 
-    <div class="container-xxl bg-success my-6 wow fadeInUp mb-0 py-3" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInUp;">
+    <div class="container-xxl bg-success my-6 wow fadeInUp mb-0 py-5" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInUp;">
         <div class="container px-lg-5">
             <div class="row align-items-center" style="height: 250px;">
                 <div class="col-12 col-md-6">
@@ -178,32 +178,72 @@ display:none;
                     <div class="position-relative w-100 mt-3">
                         <form action="" method="post">
                             <div class="d-flex py-3">
-                                <input name="nom" class="form-control border-0 rounded-pill w-100 ps-4 pe-5 me-2" type="text" placeholder="Entrez votre nom" style="height: 35px;" required="" wfd-id="id0">
-                                <input name="prenom" class="form-control border-0 rounded-pill w-100 ps-4 pe-5" type="text" placeholder="Entrez votre prenom" style="height: 35px;" required="" wfd-id="id0">
+                                <input name="nom" class="form-control border-0 rounded-pill w-100 ps-4 pe-5 me-2" type="text" placeholder="Entrez votre nom" style="height: 35px;" required wfd-id="id0">
+                                <input name="prenom" class="form-control border-0 rounded-pill w-100 ps-4 pe-5" type="text" placeholder="Entrez votre prenom" style="height: 35px;" required wfd-id="id0">
                             </div>
                             <div class="d-flex py-3">
                                 <input name="user_email" class="form-control border-0 rounded-pill w-100 ps-4 pe-5 me-2" type="email" placeholder="Entrez votre Email" style="height: 35px;" required="" wfd-id="id0">
-                                <input name="phone" class="form-control border-0 rounded-pill w-100 ps-4 pe-5" type="phone" placeholder="Entrez votre Whatsapp" style="height: 35px;" required="" wfd-id="id0">
+                                <input name="phone" class="form-control border-0 rounded-pill w-100 ps-4 pe-5" type="phone" placeholder="+229 67540987" style="height: 35px;" required="" wfd-id="id0">
                             </div>
-                            <center> <button type="submit" name="submit" class="btn btn-secondary rounded-pill" style="background: grey;font-weight: bold;text-transform: uppercase;">Enregistrer</button></center>
+                            <center> <button type="submit" name="submit" id="btn-sub" class="btn btn-sub rounded-pill">Enregistrer</button></center>
                         </form>
 
                         <?php
 
-if (isset($_POST['submit']) && isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['user_email']) && isset($_POST['phone'])) {
-    /* include('./config/conn.php'); */
-    $conn = mysqli_connect("localhost", "root", "", "formulaire");
-    mysqli_query($conn, "INSERT INTO newsletters(nom, prenom, email, phone) VALUES ('" . $_POST['nom'] . "', '" . $_POST['prenom'] . "', '" . $_POST['user_email'] . "', '" . $_POST['phone'] . "')");
-}
+                        $serveur = "localhost";
+                        $dbname = "formulaire";
+                        $user = "root";
+                        $pass = "";
 
-?>
+                        if (isset($_POST['submit']) && isset($_POST['nom']) && isset($_POST['prenom']) && isset($_POST['user_email']) && isset($_POST['phone'])) {
+                            /* include('./config/conn.php'); */
+
+                            require('./functions.php');
+
+                            $nom = valid_data($_POST["nom"]);
+                            $prenom = valid_data($_POST["prenom"]);
+                            $email_user = valid_data($_POST["user_email"]);
+                            $phone = valid_data($_POST["phone"]);
+
+
+
+                            if ((!empty($nom)
+                                && strlen($nom) <= 14
+                                && preg_match("#^[A-Za-z '-]+$#", $nom)
+                                && !empty($email_user)
+                                // && preg_match( "#^([a-z0-9_]|\\-|\\.)+@(([a-z0-9_]|\\-)+\\.)+[a-z]{2,7}$#", $email_user)) )
+                                && filter_var($email_user, FILTER_VALIDATE_EMAIL))) {
+                                try {
+                                    $conn = mysqli_connect("localhost", "root", "", "formulaire");
+
+                                    //On se connecte à la BDD
+                                    $db = new PDO("mysql:host=$serveur;dbname=$dbname", $user, $pass);
+                                    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                                    //On insère les données reçues
+                                    $sth = $db->prepare("
+                                            INSERT INTO newsletters(nom, prenom, email, phone)
+                                            VALUES(:nom, :prenom, :email, :phone)");
+                                    $sth->bindParam(':nom', $nom);
+                                    $sth->bindParam(':prenom', $prenom);
+                                    $sth->bindParam(':email', $email_user);
+                                    $sth->bindParam(':phone', $phone);
+                                    $sth->execute();
+                                    //On renvoie l'utilisateur vers la page de remerciement
+                                    // header("Location:./index.php");
+                                } catch (PDOException $e) {
+                                    echo 'Erreur : ' . $e->getMessage();
+                                }
+                            }
+                        }
+
+                        ?>
 
                         <p class="text-center text-red mt-2"> </p>
 
                     </div>
                 </div>
                 <div class="col-md-6 text-center mb-n5 d-none d-md-block">
-                    <img class="img-fluid mt-5" style="max-height: 250px;" src="assets/img/newsletter.png">
+                    <img class="img-fluid mt-5" style="max-height: 250px;" src="./assets/img/newsletter.png">
                 </div>
             </div>
         </div>
@@ -500,7 +540,7 @@ if (isset($_POST['submit']) && isset($_POST['nom']) && isset($_POST['prenom']) &
                                                         </p>
                                                         <p>
                                                             <br>
-                                                            Bonne et heureuse 2022 !
+                                                            Bonne et heureuse <span id="currentYear"></span> !
                                                             <br>
                                                             Bien cordialement,
                                                         </p>
@@ -520,15 +560,15 @@ if (isset($_POST['submit']) && isset($_POST['nom']) && isset($_POST['prenom']) &
                                                         <div class="content">
                                                             <span class="icon" style="padding:0 2.5px 0 2.5px;">
                                                                 <a href="https://www.linkedin.com/today/author/wilfrid-dedji-11459029" target="_blank">
-                                                                    <img alt="Linkedin" src="./CINEF SAS Formation Professionnelle Continue_files/linkedin@2x.png" title="linkedin" tar=""></a>
+                                                                    <img alt="Linkedin" src="./assets/img/linkedin.png" title="linkedin" tar=""></a>
                                                             </span>
                                                             <span class="icon" style="padding:0 2.5px 0 2.5px;">
                                                                 <a href="https://fr-fr.facebook.com/public/Wilfrid-Dedji" target="_blank">
-                                                                    <img alt="Facebook" src="./CINEF SAS Formation Professionnelle Continue_files/facebook@2x.png" title="Facebook"></a>
+                                                                    <img alt="Facebook" src="./assets/img/facebook.png" title="Facebook"></a>
                                                             </span>
                                                             <span class="icon" style="padding:0 2.5px 0 2.5px;">
                                                                 <a href="https://le-fondement-juridique-49.webself.net/blog/2019/02/09/seminaire-de-formation--cartographie-des-risques-juridiques-et-financiers-des-entreprises-regies-par-le-droit-ohada--a-lome-togo-du-25-fevrier-au-1-er-mars-2019" target="_blank">
-                                                                    <img alt="Twitter" src="./CINEF SAS Formation Professionnelle Continue_files/twitter@2x.png" title="Twitter"></a>
+                                                                    <img alt="Twitter" src="./assets/img/twitter.png" title="Twitter"></a>
                                                             </span>
                                                         </div>
                                                     </div>
@@ -593,7 +633,7 @@ if (isset($_POST['submit']) && isset($_POST['nom']) && isset($_POST['prenom']) &
                                 <div class="flex-shrink-0 p-2 py-1 btn-square bg-success rounded-circle me-3">
                                     <i class="fa fa-percent text-white"></i>
                                 </div>
-                                <h6 class="mb-0">PERFOMANCE</h6>
+                                <h6 class="mb-0">PERFORMANCE</h6>
                             </div>
                             <span>Selon vos objectifs professionnels, nous proposons l'expertise et le programme adapté </span>
                         </div>
@@ -648,9 +688,158 @@ if (isset($_POST['submit']) && isset($_POST['nom']) && isset($_POST['prenom']) &
 
     <!-- Features End -->
 
-    <!-- Testimonial Start -->
-    <div class="container-xxl py-4 mt-0 d-none">
+    <!-- CLIENT  Start RATTING -->
+
+    <div class="mx-auto mb-2 text-center wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px; visibility: visible; animation-delay: 0.1s; animation-name: fadeInUp;">
+        <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 64 64">
+            <path fill="#ffce31" d="M62 25.2H39.1L32 3l-7.1 22.2H2l18.5 13.7l-7 22.1L32 47.3L50.5 61l-7.1-22.2L62 25.2z"></path>
+        </svg><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 64 64">
+            <path fill="#ffce31" d="M62 25.2H39.1L32 3l-7.1 22.2H2l18.5 13.7l-7 22.1L32 47.3L50.5 61l-7.1-22.2L62 25.2z"></path>
+        </svg><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 64 64">
+            <path fill="#ffce31" d="M62 25.2H39.1L32 3l-7.1 22.2H2l18.5 13.7l-7 22.1L32 47.3L50.5 61l-7.1-22.2L62 25.2z"></path>
+        </svg><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 64 64">
+            <path fill="#ffce31" d="M62 25.2H39.1L32 3l-7.1 22.2H2l18.5 13.7l-7 22.1L32 47.3L50.5 61l-7.1-22.2L62 25.2z"></path>
+        </svg><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 64 64">
+            <path fill="#ffce31" d="M62 25.2H39.1L32 3l-7.1 22.2H2l18.5 13.7l-7 22.1L32 47.3L50.5 61l-7.1-22.2L62 25.2z"></path>
+        </svg>
+    </div>
+
+    <h4 class="text-center mb-4 "> Ils nous font confiance... </h4>
+    <!-- Client start -->
+
+    <div class="container-xxl bg-white border boder-1 border-white my-2 py-2 mt-0 mb-0 wow fadeInUp" data-wow-delay="0.1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInUp;">
         <div class="container">
+            <div class="owl-carousel client-carousel owl-loaded owl-drag">
+                <div class="owl-stage-outer">
+                    <div class="owl-stage" style="transform: translate3d(-6030px, 0px, 0px); transition: all 1s ease 0s; width: 21507px;">
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image30.png" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image31.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image48.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image33.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image34.png" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image35.jpg" alt="" width="100px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image36.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image39.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image41.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image44.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image46.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image49.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image50.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image51.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image55.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image56.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image58.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image59.png" alt="" width="150px" height="80px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image60.png" alt="" width="100px" height="80px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image61.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image63.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image65.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image66.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image68.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image69.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image70.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image71.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image2.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image3.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image4.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item active" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image5.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item active" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image6.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item active" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image7.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item active" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image8.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item active" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image9.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item active" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image10.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image11.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image12.png" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image13.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image14.png" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image15.png" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image16.png" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image17.png" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image18.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image19.png" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image20.png" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image21.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image22.png" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image23.png" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image25.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image27.png" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image28.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image29.png" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image30.png" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image31.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image48.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image33.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image34.png" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image35.jpg" alt="" width="100px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image36.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image39.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image41.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image44.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image46.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image49.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image50.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image51.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image55.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image56.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image58.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image59.png" alt="" width="150px" height="80px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image60.png" alt="" width="100px" height="80px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image61.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image63.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image65.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image66.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image68.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image69.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image70.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image71.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image2.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image3.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image4.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image5.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image6.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image7.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image8.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image9.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image10.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image11.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image12.png" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image13.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image14.png" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image15.png" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image16.png" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image17.png" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image18.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image19.png" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image20.png" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image21.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image22.png" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image23.png" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image25.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image27.png" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image28.jpg" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image29.png" alt="" width="80px" height="100px"></a></div>
+                        <div class="owl-item cloned" style="width: 111px; margin-right: 90px;"><a href="#"><img class="" src="./assets/img/partenaire/Image30.png" alt="" width="80px" height="100px"></a></div>
+                    </div>
+                </div>
+                <div class="owl-nav disabled">
+                    <div class="owl-prev">prev</div>
+                    <div class="owl-next">next</div>
+                </div>
+                <div class="owl-dots disabled"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Close client -->
+
+
+    <!-- Testimonial start -->
+
+
+
+    <div class="container-xxl py-4 mt-0">
+        <div class="container">
+
             <div class="mx-auto text-center wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px; visibility: visible; animation-delay: 0.1s; animation-name: fadeInUp;">
                 <div class="d-inline-block border rounded-pill text-success px-4 mb-3"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 64 64">
                         <path fill="#ffce31" d="M62 25.2H39.1L32 3l-7.1 22.2H2l18.5 13.7l-7 22.1L32 47.3L50.5 61l-7.1-22.2L62 25.2z"></path>
@@ -671,13 +860,13 @@ if (isset($_POST['submit']) && isset($_POST['nom']) && isset($_POST['prenom']) &
 
 
                 <div class="owl-stage-outer">
-                    <div class="owl-stage" style="transition: all 0s ease 0s; width: 3721px; transform: translate3d(-744px, 0px, 0px);">
-                        <div class="owl-item cloned" style="width: 372.007px;">
+                    <div class="owl-stage" style="transition: all 1s ease 0s; width: 3720px; transform: translate3d(-744px, 0px, 0px);">
+                        <div class="owl-item cloned" style="width: 372px;">
                             <div class="testimonial-item rounded p-4">
                                 <i class="fa fa-quote-left fa-2x text-success mb-3"></i>
                                 <p>CINEF, l'assistance des participants est formidable.</p>
                                 <div class="d-flex align-items-center">
-                                    <img class="img-fluid flex-shrink-0 rounded-circle" src="./CINEF SAS Formation Professionnelle Continue_files/User_Circle.png">
+                                    <img style="width: 35px;" class="img-fluid flex-shrink-0 rounded-circle" src="./assets/img/user_circle.png">
                                     <div class="ps-3">
                                         <h6 class="mb-1">Mr MUTOLO </h6>
                                         <small>Resp des opérations, GIZ-RDC</small>
@@ -685,12 +874,12 @@ if (isset($_POST['submit']) && isset($_POST['nom']) && isset($_POST['prenom']) &
                                 </div>
                             </div>
                         </div>
-                        <div class="owl-item cloned" style="width: 372.007px;">
+                        <div class="owl-item cloned" style="width: 372px;">
                             <div class="testimonial-item rounded p-4">
                                 <i class="fa fa-quote-left fa-2x text-success mb-3"></i>
                                 <p>Une méthodologie qui prend en compte le niveau du participant et un suivi après formation enrichissant.</p>
                                 <div class="d-flex align-items-center">
-                                    <img class="img-fluid flex-shrink-0 rounded-circle" src="./CINEF SAS Formation Professionnelle Continue_files/User_Circle.png">
+                                    <img style="width: 35px;" class="img-fluid flex-shrink-0 rounded-circle" src="./assets/img/user_circle.png">
                                     <div class="ps-3">
                                         <h6 class="mb-1">Mme KAGNI Doris</h6>
                                         <small>Assistante de Direction, ARMP-NIGER</small>
@@ -698,12 +887,12 @@ if (isset($_POST['submit']) && isset($_POST['nom']) && isset($_POST['prenom']) &
                                 </div>
                             </div>
                         </div>
-                        <div class="owl-item cloned active" style="width: 372.007px;">
+                        <div class="owl-item cloned active" style="width: 372px;">
                             <div class="testimonial-item rounded p-4">
                                 <i class="fa fa-quote-left fa-2x text-success mb-3"></i>
                                 <p>CINEF m'a fait découvrir d'autres contrées superbes</p>
                                 <div class="d-flex align-items-center">
-                                    <img class="img-fluid flex-shrink-0 rounded-circle" src="./CINEF SAS Formation Professionnelle Continue_files/User_Circle.png">
+                                    <img style="width: 35px;" class="img-fluid flex-shrink-0 rounded-circle" src="./assets/img/user_circle.png">
                                     <div class="ps-3">
                                         <h6 class="mb-1">Mlle MORISSON</h6>
                                         <small>Assistante de Direction, NCARE-Abidjan</small>
@@ -711,12 +900,12 @@ if (isset($_POST['submit']) && isset($_POST['nom']) && isset($_POST['prenom']) &
                                 </div>
                             </div>
                         </div>
-                        <div class="owl-item active center" style="width: 372.007px;">
+                        <div class="owl-item active center" style="width: 372px;">
                             <div class="testimonial-item rounded p-4">
                                 <i class="fa fa-quote-left fa-2x text-success mb-3"></i>
                                 <p>Ce fut un plaisir de vivre ce programme de formation avec CINEF</p>
                                 <div class="d-flex align-items-center">
-                                    <img class="img-fluid flex-shrink-0 rounded-circle" src="./CINEF SAS Formation Professionnelle Continue_files/User_Circle.png">
+                                    <img style="width: 35px;" class="img-fluid flex-shrink-0 rounded-circle" src="./assets/img/user_circle.png">
                                     <div class="ps-3">
                                         <h6 class="mb-1">Mme AKPOVO</h6>
                                         <small>DAF, PROJET II-BENIN</small>
@@ -724,12 +913,12 @@ if (isset($_POST['submit']) && isset($_POST['nom']) && isset($_POST['prenom']) &
                                 </div>
                             </div>
                         </div>
-                        <div class="owl-item active" style="width: 372.007px;">
+                        <div class="owl-item active" style="width: 372px;">
                             <div class="testimonial-item rounded p-4">
                                 <i class="fa fa-quote-left fa-2x text-success mb-3"></i>
                                 <p>CINEF, l'assistance des participants est formidable.</p>
                                 <div class="d-flex align-items-center">
-                                    <img class="img-fluid flex-shrink-0 rounded-circle" src="./CINEF SAS Formation Professionnelle Continue_files/User_Circle.png">
+                                    <img style="width: 35px;" class="img-fluid flex-shrink-0 rounded-circle" src="./assets/img/user_circle.png">
                                     <div class="ps-3">
                                         <h6 class="mb-1">Mr MUTOLO </h6>
                                         <small>Resp des opérations, GIZ-RDC</small>
@@ -737,12 +926,12 @@ if (isset($_POST['submit']) && isset($_POST['nom']) && isset($_POST['prenom']) &
                                 </div>
                             </div>
                         </div>
-                        <div class="owl-item" style="width: 372.007px;">
+                        <div class="owl-item" style="width: 372px;">
                             <div class="testimonial-item rounded p-4">
                                 <i class="fa fa-quote-left fa-2x text-success mb-3"></i>
                                 <p>Une méthodologie qui prend en compte le niveau du participant et un suivi après formation enrichissant.</p>
                                 <div class="d-flex align-items-center">
-                                    <img class="img-fluid flex-shrink-0 rounded-circle" src="./CINEF SAS Formation Professionnelle Continue_files/User_Circle.png">
+                                    <img style="width: 35px;" class="img-fluid flex-shrink-0 rounded-circle" src="./assets/img/user_circle.png">
                                     <div class="ps-3">
                                         <h6 class="mb-1">Mme KAGNI Doris</h6>
                                         <small>Assistante de Direction, ARMP-NIGER</small>
@@ -750,12 +939,12 @@ if (isset($_POST['submit']) && isset($_POST['nom']) && isset($_POST['prenom']) &
                                 </div>
                             </div>
                         </div>
-                        <div class="owl-item" style="width: 372.007px;">
+                        <div class="owl-item" style="width: 372px;">
                             <div class="testimonial-item rounded p-4">
                                 <i class="fa fa-quote-left fa-2x text-success mb-3"></i>
                                 <p>CINEF m'a fait découvrir d'autres contrées superbes</p>
                                 <div class="d-flex align-items-center">
-                                    <img class="img-fluid flex-shrink-0 rounded-circle" src="./CINEF SAS Formation Professionnelle Continue_files/User_Circle.png">
+                                    <img style="width: 35px;" class="img-fluid flex-shrink-0 rounded-circle" src="./assets/img/user_circle.png">
                                     <div class="ps-3">
                                         <h6 class="mb-1">Mlle MORISSON</h6>
                                         <small>Assistante de Direction, NCARE-Abidjan</small>
@@ -763,12 +952,12 @@ if (isset($_POST['submit']) && isset($_POST['nom']) && isset($_POST['prenom']) &
                                 </div>
                             </div>
                         </div>
-                        <div class="owl-item cloned" style="width: 372.007px;">
+                        <div class="owl-item cloned" style="width: 372px;">
                             <div class="testimonial-item rounded p-4">
                                 <i class="fa fa-quote-left fa-2x text-success mb-3"></i>
                                 <p>Ce fut un plaisir de vivre ce programme de formation avec CINEF</p>
                                 <div class="d-flex align-items-center">
-                                    <img class="img-fluid flex-shrink-0 rounded-circle" src="./CINEF SAS Formation Professionnelle Continue_files/User_Circle.png">
+                                    <img style="width: 35px;" class="img-fluid flex-shrink-0 rounded-circle" src="./assets/img/user_circle.png">
                                     <div class="ps-3">
                                         <h6 class="mb-1">Mme AKPOVO</h6>
                                         <small>DAF, PROJET II-BENIN</small>
@@ -776,12 +965,12 @@ if (isset($_POST['submit']) && isset($_POST['nom']) && isset($_POST['prenom']) &
                                 </div>
                             </div>
                         </div>
-                        <div class="owl-item cloned" style="width: 372.007px;">
+                        <div class="owl-item cloned" style="width: 372px;">
                             <div class="testimonial-item rounded p-4">
                                 <i class="fa fa-quote-left fa-2x text-success mb-3"></i>
                                 <p>CINEF, l'assistance des participants est formidable.</p>
                                 <div class="d-flex align-items-center">
-                                    <img class="img-fluid flex-shrink-0 rounded-circle" src="./CINEF SAS Formation Professionnelle Continue_files/User_Circle.png">
+                                    <img style="width: 35px;" class="img-fluid flex-shrink-0 rounded-circle" src="./assets/img/user_circle.png">
                                     <div class="ps-3">
                                         <h6 class="mb-1">Mr MUTOLO </h6>
                                         <small>Resp des opérations, GIZ-RDC</small>
@@ -789,12 +978,12 @@ if (isset($_POST['submit']) && isset($_POST['nom']) && isset($_POST['prenom']) &
                                 </div>
                             </div>
                         </div>
-                        <div class="owl-item cloned" style="width: 372.007px;">
+                        <div class="owl-item cloned" style="width: 372px;">
                             <div class="testimonial-item rounded p-4">
                                 <i class="fa fa-quote-left fa-2x text-success mb-3"></i>
                                 <p>Une méthodologie qui prend en compte le niveau du participant et un suivi après formation enrichissant.</p>
                                 <div class="d-flex align-items-center">
-                                    <img class="img-fluid flex-shrink-0 rounded-circle" src="./CINEF SAS Formation Professionnelle Continue_files/User_Circle.png">
+                                    <img style="width: 35px;" class="img-fluid flex-shrink-0 rounded-circle" src="./assets/img/user_circle.png">
                                     <div class="ps-3">
                                         <h6 class="mb-1">Mme KAGNI Doris</h6>
                                         <small>Assistante de Direction, ARMP-NIGER</small>
@@ -804,7 +993,7 @@ if (isset($_POST['submit']) && isset($_POST['nom']) && isset($_POST['prenom']) &
                         </div>
                     </div>
                 </div>
-                <div class="owl-nav">
+                <div class="owl-nav disabled">
                     <div class="owl-prev"><i class="bi bi-chevron-left"></i></div>
                     <div class="owl-next"><i class="bi bi-chevron-right"></i></div>
                 </div>
@@ -812,7 +1001,10 @@ if (isset($_POST['submit']) && isset($_POST['nom']) && isset($_POST['prenom']) &
             </div>
         </div>
     </div>
-    <!-- Testimonial End -->
+
+
+
+    <!-- Testimonial end -->
 
 
 
@@ -871,28 +1063,28 @@ if (isset($_POST['submit']) && isset($_POST['nom']) && isset($_POST['prenom']) &
                 </div>
 
                 <div class="col-lg-8"> <!-- ./forms/contact.php -->
-                <form action="./forms/contact.php" method="post" role="form" class="php-email-form">
-                    <div class="row">
-                        <div class="col-md-6 form-group">
-                        <input type="text" name="name" class="form-control" id="name" placeholder="Nom" required>
+                    <form action="./forms/contact.php" method="post" role="form" class="php-email-form">
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <input type="text" name="name" class="form-control" id="name" placeholder="Nom" required pattern="^[A-Za-z '-]+$" maxlength="20">
+                            </div>
+                            <div class="col-md-6 form-group mt-3 mt-md-0">
+                                <input type="email" class="form-control" name="email" id="email" placeholder="Email" required>
+                            </div>
                         </div>
-                        <div class="col-md-6 form-group mt-3 mt-md-0">
-                        <input type="email" class="form-control" name="email" id="email" placeholder="Email" required>
+                        <div class="form-group mt-3">
+                            <input type="text" class="form-control" name="subject" id="subject" placeholder="Sujet" required>
                         </div>
-                    </div>
-                    <div class="form-group mt-3">
-                        <input type="text" class="form-control" name="subject" id="subject" placeholder="Sujet" required>
-                    </div>
-                    <div class="form-group mt-3">
-                        <textarea class="form-control" name="message" rows="7" placeholder="Message" required></textarea>
-                    </div>
-                    <div class="my-3">
-                        <div class="loading">Loading</div>
-                        <div class="error-message"></div>
-                        <div class="sent-message">Votre message est envoyé avec succès! Merci</div>
-                    </div>
-                    <div class="text-center"><button type="submit" id="submit">Envoyer</button></div>
-                </form>
+                        <div class="form-group mt-3">
+                            <textarea class="form-control" name="message" rows="7" placeholder="Message" required></textarea>
+                        </div>
+                        <div class="my-3">
+                            <div class="loading">Loading</div>
+                            <div class="error-message"></div>
+                            <div class="sent-message">Votre message est envoyé avec succès! Merci</div>
+                        </div>
+                        <div class="text-center"><button type="submit" id="submit">Envoyer</button></div>
+                    </form>
                     <div class="response_msg"></div>
                 </div><!-- End Contact Form -->
 
@@ -917,9 +1109,22 @@ if (isset($_POST['submit']) && isset($_POST['nom']) && isset($_POST['prenom']) &
     <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
     <div id="preloader"></div>
-    
 
-    <?php include 'layout_js.php'?>
+
+    <?php include 'layout_js.php' ?>
+    <script>
+        // Récupérer la date actuelle du système
+        var currentDate = new Date();
+        var currentYear = currentDate.getFullYear();
+
+        // Mettre à jour l'élément HTML avec la plage d'années dynamique
+        var yearSpan = document.getElementById('currentYear');
+        yearSpan.textContent = currentYear;
+
+        // Mettre à jour la plage d'années chaque année
+        var yearRange = currentYear;
+        yearSpan.textContent = yearRange;
+    </script>
 
 
 </body>

@@ -60,8 +60,6 @@
 
                     <a class="small text-muted" href="#!">Forgot password?</a>
 
-
-
                   </form>
 
                 </div>
