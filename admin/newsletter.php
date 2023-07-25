@@ -95,7 +95,8 @@ if (!isset($_SESSION["user"])) {
                                                   <tbody id='body'>
                                                     <?php
                                                     // Établir une connexion à la base de données
-                                                    $conn = mysqli_connect("localhost", "terry", "0156", "formulaire");
+                                                    include(realpath($_SERVER["DOCUMENT_ROOT"]) . '/CINEFWEB/config/conn.php');
+                                                    $conn = conn();
 
                                                     // Vérifier la connexion
                                                     if (!$conn) {
@@ -307,9 +308,9 @@ if (!isset($_SESSION["user"])) {
                                         <td>\
                                           <h1 class="text-' + x["confirmed"] + '"> &bull;</h1>\
                                         </td>\
-                                                          <td class=\'pointer\' id=<?= $x["id"] ?>>\
-                                                            <a href="actionNewsletter.php?id=<?= $x["id"] ?>" id=<?= $x["id"] ?>\
-                                                              class=\'text-secondary <?php if (!$x["confirmed"]) { ?>actionBtn<?php } ?>\' target=\'_blank\'>\
+                                                          <td class=\'pointer d-none\' id=' + x["id"] + '>\
+                                                            <a href="actionNewsletter.php?id=' + x["id"] + '" id="' + x["id"] + '" \
+                                                              class=\'text-secondary actionBtn\' target=\'_blank\'>\
                                                               <h2 class="mdi mdi-send"></h2>\
                                                             </a>\
                                                           </td>\

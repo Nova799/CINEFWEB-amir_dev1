@@ -149,13 +149,14 @@
                                                       <th>Formation</th>
                                                       <th>Nom & prénom (s)</th>
                                                       <th>Entité</th>
-                                                      <th>Actions</th>
+                                                      <th colspan="3" class="text-center">Actions</th>
                                                     </tr>
                                                   </thead>
                                                   <tbody id='body'>
                                                     <?php
                                                     // Établir une connexion à la base de données
-                                                    $conn = mysqli_connect("localhost", "terry", "0156", "formulaire");
+                                                    include(realpath($_SERVER["DOCUMENT_ROOT"]) . '/CINEFWEB/config/conn.php');
+                                                    $conn = conn();
 
                                                     // Vérifier la connexion
                                                     if (!$conn) {
@@ -201,9 +202,13 @@
                                                             <a href="../traitement.php?id=<?= $row["id"] ?>" class='text-secondary' target='_blank'>
                                                               <h2 class="mdi mdi-eye"></h2>
                                                             </a>
+                                                          </td>
+                                                          <td>
                                                             <a href="../traitement.php?id=<?= $row["id"] ?>" class='text-secondary' target='_blank'>
                                                               <h2 class="mdi mdi-pen"></h2>
                                                             </a>
+                                                          </td>
+                                                          <td>
                                                             <a href="../traitement.php?id=<?= $row["id"] ?>" class='text-secondary' target='_blank'>
                                                               <h2 class="mdi mdi-send"></h2>
                                                             </a>

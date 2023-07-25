@@ -1,7 +1,7 @@
 <?php 
 
-
-$conn = mysqli_connect("localhost", "terry", "0156", "formulaire");
+include(realpath($_SERVER["DOCUMENT_ROOT"]) . '/CINEFWEB/config/conn.php');
+$conn = conn();
 // Vérifier la connexion
 if (!$conn) {
     die("Erreur de connexion à la base de données: " . mysqli_connect_error());
@@ -13,7 +13,7 @@ if (!isset($_GET["table"])) {
     return false;
 }
 
-if ($_GET['table'] == "formulaire") {
+if ($_GET['table'] == "formulaires") {
     $sql = "SELECT * FROM nom_table WHERE formation LIKE '%$val%' OR nom LIKE '%$val%' OR entite LIKE '%$val%' OR missions LIKE '%$val%'";
 } else if ($_GET['table'] == "newsletters"){
     $sql = "SELECT * FROM newsletters WHERE nom LIKE '%$val%' OR prenom LIKE '%$val%' OR email LIKE '%$val%' OR phone LIKE '%$val%'";
@@ -28,7 +28,7 @@ $nbr = 0;
 if (mysqli_num_rows($req) > 0) {
 while ($row = mysqli_fetch_assoc($req)) {
     $nbr += 1;
-    if ($_GET['table'] == "formulaire") {
+    if ($_GET['table'] == "formulaires") {
         if (mysqli_num_rows($req) == $nbr){
             $data .= '{"id": "'.$row["id"].'", "nom": "'.$row["nom"].'", "entite": "'.$row["entite"].'", "formation": "'.$row["formation"].'"}';
         } else {

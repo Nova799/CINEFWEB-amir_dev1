@@ -93,8 +93,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
   $libelle = $_POST['libelle'];
   $code = $_POST['code'];
   $descr = $_POST['descr'];
-
-  $conn = mysqli_connect("localhost", "nova", "cnov @", "essai");
+  include(realpath($_SERVER["DOCUMENT_ROOT"]) . '/CINEFWEB/config/conn.php');
+  $conn = conn();
 
   // Vérifier la connexion
   if (!$conn) {
