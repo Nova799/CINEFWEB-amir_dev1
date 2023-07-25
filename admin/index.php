@@ -48,8 +48,10 @@
                         <div class="statistics-details d-flex align-items-center justify-content-between">
 
                           <div class='bg-success text-light p-4 rounded'>
-                            <?php include('../config/conn.php');
-                            $conn = conn(); ?>
+                            <?php
+                            include('../config/conn.php');
+                            $conn = conn();
+                             ?>
                             <p class="statistics-title text-light">Total des utilisateurs</p>
                             <h3 class="rate-percentage text-center text-light">
                               <?php
@@ -154,10 +156,7 @@
                                                   </thead>
                                                   <tbody id='body'>
                                                     <?php
-                                                    // Établir une connexion à la base de données
-                                                    include(realpath($_SERVER["DOCUMENT_ROOT"]) . '/CINEFWEB/config/conn.php');
-                                                    $conn = conn();
-
+                                                    
                                                     // Vérifier la connexion
                                                     if (!$conn) {
                                                       die("Erreur de connexion à la base de données: " . mysqli_connect_error());
@@ -204,12 +203,12 @@
                                                             </a>
                                                           </td>
                                                           <td>
-                                                            <a href="../traitement.php?id=<?= $row["id"] ?>" class='text-secondary' target='_blank'>
+                                                            <a href="../modif.php?id=<?= $row["id"] ?>" class='text-secondary' target='_blank'>
                                                               <h2 class="mdi mdi-pen"></h2>
                                                             </a>
                                                           </td>
                                                           <td>
-                                                            <a href="../traitement.php?id=<?= $row["id"] ?>" class='text-secondary' target='_blank'>
+                                                            <a href="./?resend=<?= $row["id"] ?>" class='text-secondary'>
                                                               <h2 class="mdi mdi-send"></h2>
                                                             </a>
                                                             <!-- <div class="badge badge-opacity-success">Completed</div> -->
@@ -225,8 +224,9 @@
                                                     // Fermer la connexion à la base de données
                                                     mysqli_close($conn);
                                                     ?>
-                                                    <tr>
-                                                      <td colspan="5">
+                                                  </tbody>
+                                                  <tr>
+                                                      <td colspan="8">
                                                         <a class='btn btn-secondary float-start' href='?page=<?php if (isset($_GET['page'])) {
                                                                                                                 echo "" . (intval($_GET['page']) - 1) . "";
                                                                                                               } else {
@@ -239,7 +239,6 @@
                                                                                                                     } ?>'>Suivant</a>
                                                       </td>
                                                     </tr>
-                                                  </tbody>
                                                 </table>
                                               </div>
                                             </div>
@@ -342,3 +341,19 @@
 </body>
 
 </html>
+
+<?php 
+
+if (isset($_GET["resend"])) {
+  $id = $_GET["resend"];
+  if (!$conn){
+    include("../config/conn.php");
+    $conn = conn();
+  }
+  mysqli_query($conn, "UPDATE nom_table SET isChanged = 1, canChange = 1 WHERE id = $id AND canChange = 0 AND isChanged = 0");
+  $row = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM nom_table WHERE id = $id"));
+  include("./sender.php");
+  send_mail($row["email"], $row["nom"], $row["prenom"], "sujet", "message");
+}
+
+?>
