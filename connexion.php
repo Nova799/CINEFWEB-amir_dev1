@@ -120,11 +120,8 @@ session_start();
 <?php
 
 if (isset($_POST['sub']) && isset($_POST['pass']) && isset($_POST['mail'])) {
-  $servername = "localhost";
-  $username = "terry";
-  $password = "0156";
-  $dbname = "formulaire";
-  $conn = mysqli_connect($servername, $username, $password, $dbname);
+  include(realpath($_SERVER["DOCUMENT_ROOT"]) . '/CINEFWEB/config/conn.php');
+  $conn = conn();
 
   $sql = "SELECT * FROM user WHERE email = '" . $_POST['mail'] . "' AND password='" . $_POST['pass'] . "'";
   $result = mysqli_query($conn, $sql);

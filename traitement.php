@@ -1,12 +1,8 @@
 <?php
 
 // Connexion à la base de données
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "formulaire";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
+include(realpath($_SERVER["DOCUMENT_ROOT"]) . '/CINEFWEB/config/conn.php');
+  $conn = conn();
 
 // Vérifier la connexion
 if ($conn->connect_error) {
