@@ -6366,19 +6366,20 @@
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="summernote-wrap mg-t-30">
-                        <div class="cmp-tb-hd">
+                        <!-- <div class="cmp-tb-hd">
                             <h2>HTML Editor</h2>
                             <p>Super Simple WYSIWYG Editor on Bootstrap</p>
-                        </div>
-                        <div class="cmp-tb-hd bsc-smp-sm">
+                        </div> -->
+                        <!-- <div class="cmp-tb-hd bsc-smp-sm">
                             <label>Basic Example</label>
-                        </div>
+                        </div> -->
                         <div class="html-editor"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <script src="js1/vendor/jquery-1.12.4.min.js"></script>
     <!-- bootstrap JS
         ============================================ -->

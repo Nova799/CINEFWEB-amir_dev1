@@ -1,13 +1,15 @@
-<?php 
-  session_start();
-  if (!isset($_SESSION["user"])) {
+<?php
+session_start();
+if (!isset($_SESSION["user"])) {
+  header("Location: ../connexion.php");
+} else {
+  if ($_SESSION["user"]["role"] != "admin") {
     header("Location: ../connexion.php");
-  } else {
-    if ($_SESSION["user"]["role"] != "admin") {
-      header("Location: ../connexion.php");
-    }
   }
- ?>
+}
+?>
+
+
 <html lang="fr">
 
 <head>
@@ -51,7 +53,7 @@
                             <?php
                             include('../config/conn.php');
                             $conn = conn();
-                             ?>
+                            ?>
                             <p class="statistics-title text-light">Total des utilisateurs</p>
                             <h3 class="rate-percentage text-center text-light">
                               <?php
@@ -63,7 +65,8 @@
 
                                 echo $row['total'];
                               }
-                              ?></h3>
+                              ?>
+                            </h3>
                             <!-- <p class="text-danger d-flex"><i class="mdi mdi-menu-down"></i><span>-0.5%</span></p> -->
                           </div>
                           <div class='bg-success text-light p-4 rounded'>
@@ -82,7 +85,7 @@
                             </h3>
                             <!-- <p class="text-success d-flex"><i class="mdi mdi-menu-up"></i><span>+0.1%</span></p> -->
                           </div>
-                          
+
                           <div class='bg-success text-light p-4 rounded'>
                             <p class="statistics-title text-light">Total de formation offertes</p>
                             <h3 class="rate-percentage text-center text-light">
@@ -127,10 +130,12 @@
                           <div class="col-sm-12">
                             <div class="home-tab">
 
-                              <input type="search" id="searchInput" placeholder="Recherche..." class='form-control form-control-sm'>
+                              <input type="search" id="searchInput" placeholder="Recherche..."
+                                class='form-control form-control-sm'>
 
                               <div class="tab-content tab-content-basic">
-                                <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview">
+                                <div class="tab-pane fade show active" id="overview" role="tabpanel"
+                                  aria-labelledby="overview">
                                   <ul id="resultsList"></ul>
                                   <div class="row">
                                     <div class="col-lg-12">
@@ -156,7 +161,7 @@
                                                   </thead>
                                                   <tbody id='body'>
                                                     <?php
-                                                    
+
                                                     // Vérifier la connexion
                                                     if (!$conn) {
                                                       die("Erreur de connexion à la base de données: " . mysqli_connect_error());
@@ -176,38 +181,48 @@
                                                       // Afficher les données dans le tableau de bord
                                                       while ($row = mysqli_fetch_assoc($result)) {
                                                         $nbr++;
-                                                    ?>
+                                                        ?>
                                                         <tr>
                                                           <td>
                                                             <div class="d-flex">
                                                               <div>
-                                                                <h6><?= $nbr ?></h6>
+                                                                <h6>
+                                                                  <?= $nbr ?>
+                                                                </h6>
                                                               </div>
                                                             </div>
                                                           <td>
                                                             <div class="d-flex">
                                                               <div>
-                                                                <h6><?= $row["formation"] ?></h6>
+                                                                <h6>
+                                                                  <?= $row["formation"] ?>
+                                                                </h6>
                                                               </div>
                                                             </div>
                                                           </td>
                                                           <td>
-                                                            <h6><?= $row["nom"] ?></h6>
+                                                            <h6>
+                                                              <?= $row["nom"] ?>
+                                                            </h6>
                                                           </td>
                                                           <td>
-                                                            <h6><?= $row["entite"] ?></h6>
+                                                            <h6>
+                                                              <?= $row["entite"] ?>
+                                                            </h6>
                                                           </td>
-                                                          <td class='text-center pointer d-flex'>
-                                                            <a href="../traitement.php?id=<?= $row["id"] ?>" class='text-secondary' target='_blank'>
+                                                          <td class='text-center pointer'>
+                                                            <a href="../traitement.php?id=<?= $row["id"] ?>"
+                                                              class='text-secondary' target='_blank'>
                                                               <h2 class="mdi mdi-eye"></h2>
                                                             </a>
                                                           </td>
-                                                          <td>
-                                                            <a href="../modif.php?id=<?= $row["id"] ?>" class='text-secondary' target='_blank'>
+                                                          <td class='text-center pointer'>
+                                                            <a href="../modif.php?id=<?= $row["id"] ?>"
+                                                              class='text-secondary' target='_blank'>
                                                               <h2 class="mdi mdi-pen"></h2>
                                                             </a>
                                                           </td>
-                                                          <td>
+                                                          <td class='text-center pointer'>
                                                             <a href="./?resend=<?= $row["id"] ?>" class='text-secondary'>
                                                               <h2 class="mdi mdi-send"></h2>
                                                             </a>
@@ -215,7 +230,7 @@
                                                           </td>
                                                         </tr>
 
-                                                    <?php
+                                                        <?php
                                                       }
                                                     } else {
                                                       echo '<tr><td colspan="5" class="text-center"><h3>Aucune donnée disponible</h3></td></tr>';
@@ -226,19 +241,21 @@
                                                     ?>
                                                   </tbody>
                                                   <tr>
-                                                      <td colspan="8">
-                                                        <a class='btn btn-secondary float-start' href='?page=<?php if (isset($_GET['page'])) {
-                                                                                                                echo "" . (intval($_GET['page']) - 1) . "";
-                                                                                                              } else {
-                                                                                                                echo '0';
-                                                                                                              } ?>'>Pr&eacute;c&eacute;dent</a>
-                                                        <a class='btn btn-primary text-white float-end' href='?page=<?php if (isset($_GET['page'])) {
-                                                                                                                      echo "" . (intval($_GET['page']) + 1) . "";
-                                                                                                                    } else {
-                                                                                                                      echo '1';
-                                                                                                                    } ?>'>Suivant</a>
-                                                      </td>
-                                                    </tr>
+                                                    <td colspan="8">
+                                                      <a class='btn btn-secondary float-start'
+                                                        href='?page=<?php if (isset($_GET['page'])) {
+                                                          echo "" . (intval($_GET['page']) - 1) . "";
+                                                        } else {
+                                                          echo '0';
+                                                        } ?>'>Pr&eacute;c&eacute;dent</a>
+                                                      <a class='btn btn-primary text-white float-end'
+                                                        href='?page=<?php if (isset($_GET['page'])) {
+                                                          echo "" . (intval($_GET['page']) + 1) . "";
+                                                        } else {
+                                                          echo '1';
+                                                        } ?>'>Suivant</a>
+                                                    </td>
+                                                  </tr>
                                                 </table>
                                               </div>
                                             </div>
@@ -271,7 +288,8 @@
           <footer class="footer">
             <div class="d-sm-flex justify-content-center justify-content-sm-between">
 
-              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Designed by CINEF SAS. Copyright © 2021. All rights
+              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Designed by CINEF SAS. Copyright
+                © 2021. All rights
                 reserved.</span>
             </div>
           </footer>
@@ -286,13 +304,13 @@
     <?php include('layout_link_js.php') ?>
 
     <script>
-      (function($) {
+      (function ($) {
         $('input#searchInput').on({
-          'input': function() {
+          'input': function () {
             $.ajax({
               url: '/CINEFWEB/admin/info.php?table=formulaires&q=' + $('#searchInput').val(),
               type: 'GET',
-              success: function(data) {
+              success: function (data) {
                 var result = JSON.parse(data);
                 $('#body').html('');
                 var nbr = 0;
@@ -341,19 +359,23 @@
 </body>
 
 </html>
-
-<?php 
+<?php
 
 if (isset($_GET["resend"])) {
   $id = $_GET["resend"];
-  if (!$conn){
+  if (!$conn) {
     include("../config/conn.php");
     $conn = conn();
   }
-  mysqli_query($conn, "UPDATE nom_table SET isChanged = 1, canChange = 1 WHERE id = $id AND canChange = 0 AND isChanged = 0");
-  $row = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM nom_table WHERE id = $id"));
-  include("./sender.php");
-  send_mail($row["email"], $row["nom"], $row["prenom"], "sujet", "message");
-}
+  mysqli_query($conn, "UPDATE nom_table SET isChanged = 1, canChange = 1 WHERE id = " . $id . " AND canChange = 0 AND isChanged = 0");
+  $res = mysqli_query($conn, "SELECT * FROM nom_table WHERE id = " . $id . " AND canChange = 0 AND isChanged = 0");
+  $row = mysqli_fetch_assoc($res);
+  if (mysqli_num_rows($res) == 1) {
+    $baseUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https://" : "http://") . $_SERVER['HTTP_HOST'];
+    $url = $baseUrl . "/CINEFWEB/admin/modif.php?id=" . $row['id'];
+    include("./sender.php");
+    send_mail($row["email"], $row["nom"], $row["prenom"], "Correction nécessaire pour le formulaire soumis", "Nous avons bien reçu votre formulaire de pré-inscription à la formation intitulée: '" . $row['formation'] . "', et nous vous en remercions. <br>Cependant, il semble qu'il y ait quelques informations nécessitant une correction ou une mise à jour.<br><br>Veuillez s'il vous plaît revoir le formulaire et apporter les modifications nécessaires en cliquant sur le lien suivant :<br><a href='$url'>Lien de modification</a><br>Nous vous prions de nous renvoyer le formulaire corrigé dès que possible, avant la date limite de soumission.<br><br>Si vous avez des questions ou besoin d'assistance, n'hésitez pas à nous contacter.<br><br>Cordialement,<br>L'équipe technique de CINEF<br>");
+  }
+} else {}
 
 ?>

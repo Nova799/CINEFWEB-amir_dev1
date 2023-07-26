@@ -15,7 +15,7 @@ if (!isset($_SESSION["user"])) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Dashboard | Admin</title>
-
+    <link rel="stylesheet" href="css1/summernote/summernote.css">
     <?php include_once('layout_link_css.php') ?>
 
 </head>
@@ -104,10 +104,9 @@ if (!isset($_SESSION["user"])) {
                                                                 <div class="form-group">
                                                                     <label for="exampleInputPassword1">Message de
                                                                         campagne</label>
-                                                                    <textarea name="message" id="descr" cols="30"
-                                                                        rows="10"
+                                                                    <textarea cols="30" rows="10"
                                                                         placeholder='Description de la message'
-                                                                        class='form-control'
+                                                                        class='form-control' id='summernote'
                                                                         style="height: auto !important;"
                                                                         required></textarea>
                                                                 </div>
@@ -120,7 +119,7 @@ if (!isset($_SESSION["user"])) {
                                                                 </div>
                                                                 <button type="reset"
                                                                     class="btn btn-light">Annuler</button>
-                                                                <button type="submit" class="btn btn-success me-2"
+                                                                <button type="submit" class="btn btn-success me-2" id="submit"
                                                                     name='submit'>Envoyer</button>
                                                         </form>
 
@@ -157,6 +156,27 @@ if (!isset($_SESSION["user"])) {
         <!-- container-scroller -->
 
         <?php include('layout_link_js.php') ?>
+        <script>
+            $(document).ready(function () {
+                $('#summernote').summernote();
+                $("button#submit").on({
+                    "click": function () {
+                        $.ajax({
+                            url: "./campagne.php",
+                            method: "POST",
+                            data: {
+                                message: $('#summernote').summernote('code'),
+                                sujet: $("input[name='sujet']").val(),
+                                to: $("input[name='to']").val()
+                            },
+                            success: function (data) {
+                                alert(data);
+                            }
+                        })
+                    }
+                })
+            });
+        </script>
 
 </body>
 
@@ -166,6 +186,7 @@ if (!isset($_SESSION["user"])) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $subject = $_POST["sujet"];
     $message = $_POST["message"];
+    echo $message;
     $email = $_POST["to"];
     include(realpath($_SERVER["DOCUMENT_ROOT"]) . '/CINEFWEB/config/conn.php');
     include(realpath($_SERVER["DOCUMENT_ROOT"]) . '/CINEFWEB/admin/sender.php');
