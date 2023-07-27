@@ -217,13 +217,15 @@ if (!isset($_SESSION["user"])) {
                                                             </a>
                                                           </td>
                                                           <td class='text-center pointer'>
-                                                            <a href="../modif.php?id=<?= $row["id"] ?>"
-                                                              class='text-secondary' target='_blank'>
+                                                            <a href="#"
+                                                              class='text-secondary modif' target='_blank'
+                                                              title="<?= $row["id"] ?>">
                                                               <h2 class="mdi mdi-pen"></h2>
                                                             </a>
                                                           </td>
                                                           <td class='text-center pointer'>
-                                                            <a href="./?resend=<?= $row["id"] ?>" class='text-secondary'>
+                                                            <a href="./msgerie.php?table=nom_table&id=<?= $row["id"] ?>" target ="_blank"
+                                                              class='text-secondary'>
                                                               <h2 class="mdi mdi-send"></h2>
                                                             </a>
                                                             <!-- <div class="badge badge-opacity-success">Completed</div> -->
@@ -242,18 +244,16 @@ if (!isset($_SESSION["user"])) {
                                                   </tbody>
                                                   <tr>
                                                     <td colspan="8">
-                                                      <a class='btn btn-secondary float-start'
-                                                        href='?page=<?php if (isset($_GET['page'])) {
-                                                          echo "" . (intval($_GET['page']) - 1) . "";
-                                                        } else {
-                                                          echo '0';
-                                                        } ?>'>Pr&eacute;c&eacute;dent</a>
-                                                      <a class='btn btn-primary text-white float-end'
-                                                        href='?page=<?php if (isset($_GET['page'])) {
-                                                          echo "" . (intval($_GET['page']) + 1) . "";
-                                                        } else {
-                                                          echo '1';
-                                                        } ?>'>Suivant</a>
+                                                      <a class='btn btn-secondary float-start' href='?page=<?php if (isset($_GET['page'])) {
+                                                        echo "" . (intval($_GET['page']) - 1) . "";
+                                                      } else {
+                                                        echo '0';
+                                                      } ?>'>Pr&eacute;c&eacute;dent</a>
+                                                      <a class='btn btn-primary text-white float-end' href='?page=<?php if (isset($_GET['page'])) {
+                                                        echo "" . (intval($_GET['page']) + 1) . "";
+                                                      } else {
+                                                        echo '1';
+                                                      } ?>'>Suivant</a>
                                                     </td>
                                                   </tr>
                                                 </table>
@@ -299,12 +299,66 @@ if (!isset($_SESSION["user"])) {
       </div>
       <!-- page-body-wrapper ends -->
     </div>
+    <div class="fictif d-none">
+      <div class="col-md-4 mx-auto p-3 mt-5">
+        <form method="post" class="p-5 rounded bg-light">
+          <input type="hidden" name="id" id="id">
+          <div class="form-check">
+            <input type="radio" name="edit" value="moi" id="moi" class="form-check-input" checked><label for="moi"
+              class="form-check-label text-uppercase fw-bolder">Faire la modification
+              moi-même</label><br>
+          </div>
+          <div class="form-check">
+            <input type="radio" name="edit" value="lui" id="lui" class="form-check-input"><label for="lui"
+              class="form-check-label text-uppercase fw-bolder">Renvoyer le formulaire</label><br>
+          </div>
+          <button type="button" class="btn btn-dark text-uppercase float-start"
+            onclick="(function ($) {$('div.fictif').toggleClass('d-none')})(jQuery)">Fermer</button>
+          <button id="subm" class="btn btn-primary text-uppercase float-end">Soumettre</button>
+          <br>
+        </form>
+      </div>
+    </div>
     <!-- container-scroller -->
 
     <?php include('layout_link_js.php') ?>
 
     <script>
       (function ($) {
+        $("button#subm").on({
+          "click": function () {
+            if ($("#moi").prop("checked")) {
+              window.open("../modif.php?id=" + $("input#id").val(), "_blank");
+            } else {
+              $.ajax({
+                url: "../modif_T.php?resend=" + $("input#id").val(),
+                method: "GET",
+                success: function (data) {
+                  alert("Le mail a été envoyé avec succès");
+                  $("div.fictif").toggleClass("d-none");
+                }
+              })
+            }
+            return false;
+          }
+        })
+        $("div.fictif").css({
+          background: "rgba(2, 2, 2, 0.7)",
+          position: "fixed",
+          top: "0",
+          right: "0",
+          width: "100%",
+          height: "100%",
+          "z-index": "99999"
+        });
+        $("a.modif").on({
+          "click": function () {
+            $("div.fictif form input[type='hidden']").val($("a.modif").attr("title"));
+            $("div.fictif").toggleClass("d-none");
+            return false;
+          }
+        })
+
         $('input#searchInput').on({
           'input': function () {
             $.ajax({
@@ -361,6 +415,32 @@ if (!isset($_SESSION["user"])) {
 </html>
 <?php
 
+if (isset($_POST["sub"])) {
+  $decision = $_POST["edit"];
+  $id = $_POST["id"];
+  if (!$conn) {
+    include("../config/conn.php");
+    $conn = conn();
+  }
+  mysqli_query($conn, "UPDATE nom_table SET isChanged = 1, canChange = 1 WHERE id = " . $id . " AND canChange = 0 AND isChanged = 0");
+  $res = mysqli_query($conn, "SELECT * FROM nom_table WHERE id = " . $id . " AND canChange = 0 AND isChanged = 0");
+  $row = mysqli_fetch_assoc($res);
+  if (mysqli_num_rows($res) == 1) {
+    if ($decision == "moi") {
+      ?>
+      <script>
+        window.open("../modif.php?id=<?php echo $_POST["id"] ?>")
+      </script>
+      <?php
+    } else {
+      $baseUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https://" : "http://") . $_SERVER['HTTP_HOST'];
+      $url = $baseUrl . "/CINEFWEB/modif.php?id=" . $row['id'];
+      include("./sender.php");
+      send_mail($row["email"], $row["nom"], $row["prenom"], "Correction nécessaire pour le formulaire soumis", "Nous avons bien reçu votre formulaire de pré-inscription à la formation intitulée: '" . $row['formation'] . "', et nous vous en remercions. <br>Cependant, il semble qu'il y ait quelques informations nécessitant une correction ou une mise à jour.<br><br>Veuillez s'il vous plaît revoir le formulaire et apporter les modifications nécessaires en cliquant sur le lien suivant :<br><a href='$url'>Lien de modification</a><br>Nous vous prions de nous renvoyer le formulaire corrigé dès que possible, avant la date limite de soumission.<br><br>Si vous avez des questions ou besoin d'assistance, n'hésitez pas à nous contacter.<br><br>Cordialement,<br>L'équipe technique de CINEF<br>");
+    }
+  }
+}
+
 if (isset($_GET["resend"])) {
   $id = $_GET["resend"];
   if (!$conn) {
@@ -372,10 +452,11 @@ if (isset($_GET["resend"])) {
   $row = mysqli_fetch_assoc($res);
   if (mysqli_num_rows($res) == 1) {
     $baseUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https://" : "http://") . $_SERVER['HTTP_HOST'];
-    $url = $baseUrl . "/CINEFWEB/admin/modif.php?id=" . $row['id'];
+    $url = $baseUrl . "/CINEFWEB/modif.php?id=" . $row['id'];
     include("./sender.php");
     send_mail($row["email"], $row["nom"], $row["prenom"], "Correction nécessaire pour le formulaire soumis", "Nous avons bien reçu votre formulaire de pré-inscription à la formation intitulée: '" . $row['formation'] . "', et nous vous en remercions. <br>Cependant, il semble qu'il y ait quelques informations nécessitant une correction ou une mise à jour.<br><br>Veuillez s'il vous plaît revoir le formulaire et apporter les modifications nécessaires en cliquant sur le lien suivant :<br><a href='$url'>Lien de modification</a><br>Nous vous prions de nous renvoyer le formulaire corrigé dès que possible, avant la date limite de soumission.<br><br>Si vous avez des questions ou besoin d'assistance, n'hésitez pas à nous contacter.<br><br>Cordialement,<br>L'équipe technique de CINEF<br>");
   }
-} else {}
+} else {
+}
 
 ?>

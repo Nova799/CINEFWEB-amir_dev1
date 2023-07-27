@@ -31,20 +31,20 @@ if (!isset($_SESSION["user"])) {
       <?php include_once('header_left.php') ?>
       <?php
 
-      function getEmail($id)
+      function getEmail($id, $table)
       {
         $conn = mysqli_connect("localhost", "terry", "0156", "formulaire");
-        $res = mysqli_query($conn, "SELECT * FROM newsletters WHERE id = $id");
+        $res = mysqli_query($conn, "SELECT * FROM $table WHERE id = $id");
         return mysqli_fetch_assoc($res);
       }
 
       ?>
       <!-- partial -->
-      <div class="main-panel">
+      <div class="main-panel mb-5">
 
         <div class="content-wrapper">
           <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-12 mb-5">
               <div class="col-md-6 mx-auto">
                 <div class="card">
                   <div class="card-body">
@@ -66,8 +66,7 @@ if (!isset($_SESSION["user"])) {
                             <div class="form-group">
                               <label for="exampleInputEmail1">To</label>
                               <input type="email" class="form-control" id="exampleInputEmail1"
-                                placeholder="Destinataire" name='to' <?php if (isset($_GET["id"])) { ?>
-                                  value="<?= getEmail($_GET["id"])["email"] ?>" readonly<?php } ?>>
+                                placeholder="Destinataire" name='to'>
                             </div>
                           </div>
                         </div>
@@ -118,23 +117,23 @@ if (!isset($_SESSION["user"])) {
 
     <?php include('layout_link_js.php') ?>
     <script>
-            $(document).ready(function () {
-                $('#summernote').summernote();
-                $("button#submit").on({
-                    "click": function () {
-                        $.ajax({
-                            url: "./campagne_T.php",
-                            method: "GET",
-                            data: {
-                                message: $('#summernote').summernote('code'),
-                                sujet: $("input[name='sujet']").val(),
-                                to: $("input[name='to']").val()
-                            }
-                        })
-                    }
-                })
-            });
-        </script>
+      $(document).ready(function () {
+        $('#summernote').summernote();
+        $("button#submit").on({
+          "click": function () {
+            $.ajax({
+              url: "./campagne_T.php",
+              method: "GET",
+              data: {
+                message: $('#summernote').summernote('code'),
+                sujet: $("input[name='sujet']").val(),
+                to: $("input[name='to']").val()
+              }
+            })
+          }
+        })
+      });
+    </script>
 
 
 </body>
