@@ -169,9 +169,9 @@ if (!isset($_SESSION["user"])) {
 
                                                     // Récupérer les informations de base de données
                                                     if (!isset($_GET['page']) || $_GET['page'] == 0) {
-                                                      $query = "SELECT formation, nom, entite, id FROM nom_table ORDER BY id DESC LIMIT 10";
+                                                      $query = "SELECT formation, nom, entite, id, isChanged FROM nom_table ORDER BY id DESC LIMIT 10";
                                                     } else {
-                                                      $query = "SELECT formation, nom, entite, id FROM nom_table ORDER BY id DESC LIMIT " . intval($_GET['page']) * 10 . ", " . intval($_GET['page']) * 20;
+                                                      $query = "SELECT formation, nom, entite, id, isChanged FROM nom_table ORDER BY id DESC LIMIT " . intval($_GET['page']) * 10 . ", " . intval($_GET['page']) * 20;
                                                     }
                                                     $result = mysqli_query($conn, $query);
 
@@ -218,7 +218,7 @@ if (!isset($_SESSION["user"])) {
                                                           </td>
                                                           <td class='text-center pointer'>
                                                             <a href="#"
-                                                              class='text-secondary modif' target='_blank'
+                                                              class='text-<?php if($row['isChanged'] == 1 && $row['canChange'] == 0){ ?>danger<?php } else{ ?>secondary modif<?php } ?>'
                                                               title="<?= $row["id"] ?>">
                                                               <h2 class="mdi mdi-pen"></h2>
                                                             </a>
@@ -328,7 +328,7 @@ if (!isset($_SESSION["user"])) {
         $("button#subm").on({
           "click": function () {
             if ($("#moi").prop("checked")) {
-              window.open("../modif.php?id=" + $("input#id").val(), "_blank");
+              window.open("../modif.php?myself=true&id=" + $("input#id").val(), "_blank");
             } else {
               $.ajax({
                 url: "../modif_T.php?resend=" + $("input#id").val(),
@@ -352,8 +352,8 @@ if (!isset($_SESSION["user"])) {
           "z-index": "99999"
         });
         $("a.modif").on({
-          "click": function () {
-            $("div.fictif form input[type='hidden']").val($("a.modif").attr("title"));
+          "click": function (e) {
+            $("div.fictif form input[type='hidden']").val(e.currentTarget.title);
             $("div.fictif").toggleClass("d-none");
             return false;
           }

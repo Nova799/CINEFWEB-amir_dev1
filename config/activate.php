@@ -1,7 +1,8 @@
 <?php 
 
 if (!isset($_GET["action"])) {
-    header("Location: ../");
+    // header("Location: ../");
+    echo "";
 } else {
     if ($_GET["action"] == "newsletters" and isset($_GET["email"])) {
         include(realpath($_SERVER["DOCUMENT_ROOT"]).'/CINEFWEB/config/conn.php');

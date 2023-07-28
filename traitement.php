@@ -1,358 +1,301 @@
-<?php
-
-// Connexion à la base de données
-include(realpath($_SERVER["DOCUMENT_ROOT"]) . '/CINEFWEB/config/conn.php');
-  $conn = conn();
-
-// Vérifier la connexion
-if ($conn->connect_error) {
-  die("Erreur de connexion à la base de données : " . $conn->connect_error);
-}
-
-// Requête SQL pour récupérer les données du formulaire
-
-$sql = "SELECT * FROM nom_table ORDER BY id DESC LIMIT 1";
-if (isset($_GET['id'])) {
-  $sql = "SELECT * FROM nom_table WHERE id = ".$_GET['id'];
-}
-
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-  // Afficher les données
-  $row = $result->fetch_assoc();
-  $id = $row['id'];
-  $formation = $row['formation'];
-  $nom = $row['nom'];
-  $entite = $row['entite'];
-  $missions = $row['missions'];
-  $formation_precedente = $row['formation_precedente'];
-  $formation_details = $row['formation_details'];
-  $demande_personnelle = $row['demande_personnelle'];
-  $difficultes = $row['difficultes'];
-  $conseil = $row['conseil'];
-  $objectifs = $row['objectifs'];
-  $attentes = $row['attentes'];
-  $autres_priorites = $row['autres_priorites'];
-  $objectif1 = $row['objectif1'];
-  $objectif2 = $row['objectif2'];
-  $objectif3 = $row['objectif3'];
-  $cas_concrets = $row['cas_concrets'];
-  $remarques = $row['remarques'];
-  $telephone = $row['telephone'];
-  $email = $row['email'];
-} else {
-  echo "Aucune donnée trouvée.";
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
+<?php
+if (isset($_GET["id"])) {
+  require(realpath($_SERVER["DOCUMENT_ROOT"]) . '/CINEFWEB/config/conn.php');
+  $conn = conn();
+  $row = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM nom_table WHERE id = " . $_GET['id'] . ""));
+  if (!$row["id"]) {
+    header("Location: /CINEFWEB/");
+  }
+} else {
+  header("Location: /CINEFWEB/");
+}
+?>
+
+<head>
+  <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Tables / Data - NiceAdmin Bootstrap Template</title>
-  <meta name="robots" content="noindex, nofollow">
+  <title> CINEF | FORMATION PRO ET CONTINUE </title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <meta content="" name="description">
   <meta content="" name="keywords">
 
-  <!-- Favicons -->
-  <link href="assets/img/favicon.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <style>
+    main {
+      padding-right: 80px;
+    }
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.gstatic.com/" rel="preconnect">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    body {
+      background-color: #ede7f6;
+      font-family: \'Poppins\', sans-serif;
+    }
 
-  <!-- Vendor CSS Files -->
-  <link href="asset/js/bootstrap.min.css" rel="stylesheet">
-  <link href="asset/js/bootstrap-icons.css" rel="stylesheet">
-  <link href="asset/js/boxicons.min.css" rel="stylesheet">
-  <link href="asset/js/quill.snow.css" rel="stylesheet">
-  <link href="asset/js/quill.bubble.css" rel="stylesheet">
-  <link href="asset/js/remixicon.css" rel="stylesheet">
-  <link href="asset/js/style.css" rel="stylesheet">
+    .form {
+      height: 1100px;
+      width: 650px;
+      margin: auto;
+    }
 
-  <!-- Template Main CSS File -->
-  <link href="asset/js/style(1).css" rel="stylesheet">
+    .required {
+      font-size: 13px;
+      color: red;
+    }
 
-  <!-- =======================================================
-  * Template Name: NiceAdmin
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
+    .title-div {
+      /* height: 150px; */
+      width: 650px;
+      background-color: #FDFEFE;
+      margin: 15px;
+      border-radius: 8px;
+      border-top: 8px solid #92c0a1;
+      padding: 25px;
+    }
+
+    .title-div strong {
+      color: green;
+    }
+
+    .button {
+      display: none;
+    }
+
+    .name-div,
+    .college-div,
+    .gmail-div,
+    .mobile-div {
+      height: 150px;
+      width: 650px;
+      background-color: #FDFEFE;
+      margin: 15px;
+      border-radius: 8px;
+    }
+
+    .gmail-div-option {
+      width: 650px;
+      background-color: #FDFEFE;
+      margin: 15px;
+      border-radius: 8px;
+    }
+
+    .name {
+      padding: 20px 0 25px 25px;
+      font-size: 15px;
+    }
+
+    .input-div {
+
+      padding-left: 25px;
+    }
+
+    .input-div input {
+      width: 300px;
+      border: 0;
+      border-left: 2px solid rgba(234, 120, 22, 0.7);
+      outline: 0;
+      border-bottom: 1.5px solid #DCD7D7;
+    }
+
+    #attentes_wait {
+      margin: 0 16px 186px;
+      padding-top: 0px;
+    }
+
+    #priority_others {
+      padding-top: 0px;
+      margin-top: 99px;
+    }
+
+    #list_objectif {
+      height: 230px;
+    }
+
+    .list_obj {
+      border-left: 2px solid rgba(234, 120, 22, 0.7);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(42px);
+      -webkit-backdrop-filter: blur(42px);
+      list-style-type: none;
+      text-decoration: none;
+      margin-bottom: 10px;
+      accent-color: rgba(234, 120, 22, 0.7);
+    }
+
+    .list_obj li {
+      margin-bottom: 30px;
+    }
+
+    .last-div h2 {
+      text-align: center;
+      padding-top: 30px;
+      color: #a2a4a6;
+      font-weight: 600;
+    }
+
+    .term {
+      font-size: 12px;
+      padding-left: 65px;
+      padding-top: 5px;
+      position: absolute;
+    }
+
+    .never {
+      padding-left: 15px;
+      font-size: 12px;
+      padding-top: 10px;
+      font-weight: 400;
+    }
+
+    .title-form {
+      font-size: 3px;
+      text-align: center;
+      font-weight: 500;
+      color: green;
+    }
+  </style>
+
 </head>
 
-<body class="">
-
-  <main id="main" class="main mx-auto">
-
-    <div class="pagetitle">
-      <h1></h1>
-      <nav>
-
-      </nav>
-    </div><!-- End Page Title -->
-
-    <section class="section">
-      <div class="row">
-      <center><img src="Logo blanc.png " width='100'></center>
-        <div class="col-lg-12">
-
-          <div class="card">
-            <div class="card-body">
-              
-
-              <!-- Table with stripped rows -->
-              <div class="datatable-wrapper datatable-loading no-footer sortable searchable fixed-columns">
-                <div class="datatable-container">
-                  <table class="table datatable datatable-table">
-                    <!-- <thead>
-                      <tr>
-                        <th data-sortable="true" style="width: 5.654174884944116%;"><a href="tables-data.html#"
-                            class="datatable-sorter">#</a></th>
-                        <th data-sortable="true" style="width: 28.007889546351084%;"><a href="tables-data.html#"
-                            class="datatable-sorter">Name</a></th>
-                        <th data-sortable="true" style="width: 37.738330046022355%;"><a href="tables-data.html#"
-                            class="datatable-sorter">Position</a></th>
-                        <th data-sortable="true" style="width: 9.270216962524655%;"><a href="tables-data.html#"
-                            class="datatable-sorter">Age</a></th>
-                        <th data-sortable="true" style="width: 19.32938856015779%;"><a href="tables-data.html#"
-                            class="datatable-sorter">Start Date</a></th>
-                      </tr>
-                    </thead> -->
-                    <tbody>
+<body>
 
 
-                      <!DOCTYPE html>
-                      <html lang="en">
+  <main id="main">
 
-                      <head>
-                        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-                        <title>Tableau des informations</title>
-                        <style>
-                          table {
-                            border-collapse: collapse;
-                            width: 100%;
-                          }
+    <div class="form">
 
-                          th,
-                          td {
-                            border: 1px solid #ddd;
-                            padding: 8px;
-                          }
+      <div class="title-div">
+        <h3 class="title"> Attentes du participant : <strong>
+            <?= $row["nom"] ?>
+          </strong> </h3>
+        <p>Intitule de la formation : <strong>
+            <?= $row["formation"] . " | " . $row["entite"] ?>
+          </strong> </p>
+        <input type="hidden" value="<?= $row["id"] ?>" name="id">
+      </div>
 
-                          th {
-                            background-color: #f2f2f2;
-                          }
-                        </style>
-                      </head>
-
-                      <body class="pt-4"> 
-                        <h1 class="pt-4">Intitulé de la formation : <span style="color: #ff0000">  <?= $formation ?> </span> </h1>
-                        <h5 class="card-title">Vérification des Informations</h5>
-                        <h1></h1>
-                        <table>
-                          <tr>
-                            <th>Questionnaires</th>
-                            <th>Réponses</th>
-                          </tr>
-                          <?php
-                          echo "<tr>";
-                          echo "<td colspan='2' style='color: red;'><h2><center>Informations Personnelles:</center></h2></td>";
-
-                          echo "</tr>";
-                          echo "<tr>";
-                          echo "<td>Nom et Prénoms :</td><td>" . $nom . "</td>";
-                          echo "</tr>";
-                          echo "<tr>";
-                          echo "<td>Entité/Direction/Service :</td><td>" . $entite . "</td>";
-                          echo "</tr>";
-                          echo "<tr>";
-                          echo "<td>Quelles sont aujourd'hui vos principales missions et activités dans l’entreprise ?</td><td>" . $missions . "</td>";
-                          echo "</tr>";
-                          echo "<tr>";
-                          echo "<td colspan='2' style='color: red;'><h2><center>Informations Professionnelles:</center></h2></td>";
-                          echo "</tr>";
-                          echo "<td>Avez-vous déjà suivi une formation sur ce thème ou un thème similaire ?</td><td>" . $formation_precedente . "</td>";
-                          echo "</tr>";
-                          echo "<tr>";
-                          echo "<td>Si oui, laquelle et à quelle date ?</td><td>" . $formation_details . "</td>";
-                          echo "</tr>";
-                          echo "<tr>";
-                          echo "<td>Avez-vous demandé personnellement à suivre cette formation ?</td><td>" . $demande_personnelle . "</td>";
-                          echo "</tr>";
-                          echo "<tr>";
-                          echo "<td>Si oui, quelles difficultés rencontrez-vous pour lesquelles vous souhaitez suivre cette formation ?</td><td>" . $difficultes . "</td>";
-                          echo "</tr>";
-                          echo "<tr>";
-                          echo "<td>Si non, qui vous a conseillé cette formation ?</td><td>" . $conseil . "</td>";
-                          echo "</tr>";
-                          echo "<tr>";
-                          echo "<td colspan='2' style='color: red;'><h2><center>Informations Complémentaires:</center></h2></td>";
-                          echo "</tr>";
-                          echo "<td>Suivez-vous cette formation dans l'objectif de prise de poste ou sensibilisation ?</td><td>" . $objectifs . "</td>";
-                          echo "</tr>";
-                          echo "<tr>";
-                          echo "<td>Qu'attendez-vous en priorité de cette formation ?</td><td>" . $attentes . "</td>";
-                          echo "</tr>";
-                          echo "<tr>";
-                          echo "<td>Vos Autres priorités:</td><td>" . $autres_priorites . "</td>";
-                          echo "</tr>";
-                          echo "<tr>";
-                          echo "<td>Quels sont vos trois objectifs opérationnels à atteindre à l'issue de cette formation ?</td><td>" . $objectif1 . "<br>" . $objectif2 . "<br>" . $objectif3 . "</td>";
-                          echo "</tr>";
-                          echo "<tr>";
-                          echo "<td>Avez-vous des cas concrets (dossiers) pour lesquels vous souhaiteriez des réponses durant la formation ? Merci de nous les envoyer par mail ou de les amener en formation.</td><td>" . $cas_concrets . "</td>";
-                          echo "</tr>";
-                          echo "<tr>";
-                          echo "<td>Autres remarques:</td><td>" . $remarques . "</td>";
-                          echo "</tr>";
-                          echo "<tr>";
-                          echo "<td>Téléphone:</td><td>" . $telephone . "</td>";
-                          echo "</tr>";
-                          echo "<tr>";
-                          echo "<td>Email:</td><td>" . $email . "</td>";
-                          echo "</tr>";
-
-                          ?>
-                        </table>
-
-
-
-
-
-
-
-                    </tbody>
-                  </table>
-                </div>
-                <div class="datatable-bottom text-center">
-                <?php if (!isset($_GET['id'])) { ?>            
-                  <form action="" method="post" id='html'>
-                    <?php
-                    // Connexion à la base de données
-                    $servername = "localhost";
-                    $username = "root";
-                    $password = "";
-                    $dbname = "formulaire";
-
-                    $conn = new mysqli($servername, $username, $password, $dbname);
-
-                    // Vérifier la connexion
-                    if ($conn->connect_error) {
-                      die("Erreur de connexion à la base de données : " . $conn->connect_error);
-                    }
-
-                    // Requête SQL pour récupérer les données du formulaire
-                    $sql = "SELECT * FROM nom_table ORDER BY id DESC LIMIT 1";
-
-                    $result = $conn->query($sql);
-
-                    if ($result->num_rows > 0) {
-                      // Afficher les données
-                      $row = $result->fetch_assoc();
-                      $id = $row['id'];
-                    }
-                    ?>
-                    <input type="hidden" name="id" value="<?= $id; ?>">
-                    <button type="button" class="btn btn-success" onclick="document.getElementById('html').innerHTML = '<h3>Vos informations ont été envoyées avec succès.</h3>';">Confirmer</button>
-                    <button type="submit" class="btn btn-danger" name='rejet'>Annuler</button>
-                  </form>
-                  <?php }else{
-                    ?>
-                    <button class='btn btn-success' onclick='window.print()'>Télécharger</button>
-                    <?php
-                  } ?>
-                  </div>
-              </div>
-              <!-- End Table with stripped rows -->
-
-            </div>
-          </div>
-
+      <div class="name-div">
+        <div class="name">Principales missions et activités dans l’entreprise <span class="required">*</span> </div>
+        <div class="input-div">
+          <input type="input" name="missions" placeholder="Votre réponse" value="<?= $row["missions"] ?>" readonly>
         </div>
       </div>
-    </section>
+
+      <div class="college-div">
+        <div class="name">Avez-vous déjà suivi une formation sur ce thème ou un thème similaire ? <span
+            class="required">*</span> <strong>
+            <?php if ($row["formation_precedente"] == "oui"): ?>[ Oui ]
+            <?php else: ?>[ Non ]
+            <?php endif ?>
+          </strong> </div>
+        <div class="input-div">
+          <input type="input" name="formation_details" placeholder="Your answwer for college name"
+            value="<?= $row['formation_details'] ?>" readonly>
+        </div>
+      </div>
+
+      <div class="gmail-div-option">
+        <div class="name"> Avez-vous demandé personnellement à suivre cette formation <span class="required">*</span>
+          <strong>
+            <?php if ($row["demande_personnelle"] == "oui"): ?>[ Oui ]
+            <?php else: ?>[ Non ]
+            <?php endif ?>
+          </strong>
+        </div>
+        <!-- <div class="input-div">
+          <input type="input" name="answer" placeholder="Your email" value="">
+        </div> -->
+      </div>
+
+
+      <div class="gmail-div-option">
+        <div class="name"> Suivez-vous cette formation dans l'objectif de prise de poste ou sensibilisation ? <strong>
+            <?php if ($row["objectifs"] == "oui"): ?>[ Oui ]
+            <?php else: ?>[ Non ]
+            <?php endif ?>
+          </strong> </div>
+
+      </div>
+
+      <div class="mobile-div">
+        <div class="name">Qu'attendez-vous en priorité de cette formation ? <span class="required">*</span> </div>
+        <div class="input-div">
+          <input type="input" name="attentes" placeholder="Your answwer"
+            value="<?= $row['attentes'] ? $row['attentes'] : 'Vide' ?>" readonly>
+        </div>
+      </div>
+
+      <div class="mobile-div">
+        <div class="name"> Vos autres priorites <span class="required">*</span> </div>
+        <div class="input-div">
+          <input type="input" name="autres_priorites" placeholder="Your answwer" value="<?= $row['autres_priorites'] ?>"
+            readonly>
+        </div>
+      </div>
+
+
+
+      <div class="mobile-div" id="list_objectif">
+        <div class="name"> Vos trois objectifs opérationnels à atteindre à l\'issue de cette formation <span
+            class="required">*</span> </div>
+        <div class="input-div">
+          <p>
+          <ul class="list_obj">
+            <li><?= $row['objectif1'] ?></li>
+            <li><?= $row['objectif2'] ?></li>
+            <li><?= $row['objectif3'] ?> </li>
+          </ul>
+          </p>
+        </div>
+      </div>
+
+
+      <div class="last-div">
+        <p class="never text-center">
+          <a class="btn btn-secondary" href="./makePdf.php?id=<?= $_GET['id'] ?>" download>Télécharger</a>
+        </p>
+        <p class="term d-none"> This content is neither created nor endorsed by google, Report abuse - Term of service
+        </p>
+        <h2>CINEF - SAS</h2>
+      </div>
+
+
+
+    </div>
 
   </main><!-- End #main -->
 
-  <!-- Vendor JS Files -->
-  <script src="asset/js/apexcharts.min.js"></script>
-  <script src="asset/js/bootstrap.bundle.min.js"></script>
-  <script src="asset/js/chart.umd.js"></script>
-  <script src="asset/js/echarts.min.js"></script>
-  <script src="asset/js/quill.min.js"></script>
-  <script src="asset/js/simple-datatables.js"></script>
-  <script src="asset/js/tinymce.min.js"></script>
-  <script src="asset/js/validate.js"></script>
 
-  <!-- Template Main JS File -->
-  <script src="asset/js/main.js"></script>
-
-  <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-P7JSYB1CSP"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   <script>
-    if (window.self == window.top) {
-      window.dataLayer = window.dataLayer || [];
-
-      function gtag() {
-        dataLayer.push(arguments);
+    document.querySelector("#btn").onclick = function () {
+      data = {};
+      for (let elem of document.getElementsByTagName("input")) {
+        data[elem.name] = elem.value;
       }
-      gtag('js', new Date());
-      gtag('config', 'G-P7JSYB1CSP');
+      $.ajax({
+        url: "modif_T.php",
+        type: "GET",
+        data: data,
+        success: function (data) {
+          alert("La modifiction a été un succès");
+          // if (<?php /*if(isset($_SESSION["user"])){ ?>true<?php } else { ?>false<?php }*/?>) {
+          setTimeout(function () {
+            window.close();
+          }, 200)
+          // }
+        }
+      })
     }
   </script>
-  <script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/v52afc6f149f6479b8c77fa569edb01181681764108816" integrity="sha512-jGCTpDpBAYDGNYR5ztKt4BQPGef1P0giN6ZGVUi835kFF88FOmmn8jBQWNgrNd8g/Yu421NdgWhwQoaOPFflDw==" data-cf-beacon="{&quot;rayId&quot;:&quot;7e270bf5cba64899&quot;,&quot;token&quot;:&quot;68c5ca450bae485a842ff76066d69420&quot;,&quot;version&quot;:&quot;2023.4.0&quot;,&quot;si&quot;:100}" crossorigin="anonymous"></script>
 
-
-  <svg id="SvgjsSvg1001" width="2" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev" style="overflow: hidden; top: -100%; left: -100%; position: absolute; opacity: 0;">
-    <defs id="SvgjsDefs1002"></defs>
-    <polyline id="SvgjsPolyline1003" points="0,0"></polyline>
-    <path id="SvgjsPath1004" d="M0 0 "></path>
-  </svg><svg id="SvgjsSvg1001" width="2" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev" style="overflow: hidden; top: -100%; left: -100%; position: absolute; opacity: 0;">
-    <defs id="SvgjsDefs1002"></defs>
-    <polyline id="SvgjsPolyline1003" points="0,0"></polyline>
-    <path id="SvgjsPath1004" d="M0 0 "></path>
-  </svg>
-
-
-  <svg id="SvgjsSvg1001" width="2" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev" style="overflow: hidden; top: -100%; left: -100%; position: absolute; opacity: 0;">
-    <defs id="SvgjsDefs1002"></defs>
-    <polyline id="SvgjsPolyline1003" points="0,0"></polyline>
-    <path id="SvgjsPath1004" d="M0 0 "></path>
-  </svg>
 
 </body>
 
 </html>
-<?php
-// Connexion à la base de données
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "formulaire";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Vérifier la connexion
-if ($conn->connect_error) {
-  die("Erreur de connexion à la base de données : " . $conn->connect_error);
-}
-
-if (isset($_POST['rejet']) && isset($_POST['id'])) {
-  echo $_POST['id'];
-  $sql = "DELETE FROM nom_table WHERE id = " . $_POST['id'];
-  $conn->query($sql);
-  ?>
-  
-  <script>
-    location.href = location.origin + "/Impact/";
-  </script>
-
-  <?php
-}
-
-?>

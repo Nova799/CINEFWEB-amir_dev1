@@ -4,7 +4,7 @@ echo $_GET["id"];
 require(realpath($_SERVER["DOCUMENT_ROOT"]) . '/CINEFWEB/config/conn.php');
 if (isset($_GET["id"])) {
     $conn = conn();
-
+    
     try {
         mysqli_query($conn, "UPDATE nom_table SET canChange = 0, missions = '" . $_GET["missions"] . "' WHERE id = " . $_GET["id"] . " AND canChange = 1 AND isChanged = 1");
         // mysqli_query($conn, "UPDATE nom_table SET canChange = 0, missions = '" . $_GET["missions"] . "', formation_details = '" . $_GET["formation_details"] . "', attentes = '" . $_GET["attentes"] . "', autres_priorites = '" . $_GET["autres_priorites"] . "', objectif1 = '" . $_GET["objectif1"] . "', objectf2 = '" . $_GET["objectif2"] . "', objectif3 = '" . $_GET["objectif3"] . "' WHERE id = " . $_GET["id"] . " AND canChange = 1 AND isChanged = 1");

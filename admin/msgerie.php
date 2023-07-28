@@ -53,6 +53,7 @@ if (!isset($_SESSION["user"])) {
                       Renseignez les informations du message
                     </p>
                     <form class="forms-sample" method='POST'>
+                      <input type="hidden" id="id" value="<?= $_GET["id"] ?>">
                       <div class="form-group">
                         <div class="row">
                           <div class="col">
@@ -90,7 +91,7 @@ if (!isset($_SESSION["user"])) {
                       <i class="input-helper"></i></label>
                     </div> -->
                         <button type="reset" class="btn btn-light">Annuler</button>
-                        <button type="submit" class="btn btn-success me-2" name='submit'>Envoyer</button>
+                        <button type="button" id="submit" class="btn btn-success me-2" name='submit'>Envoyer</button>
                     </form>
                   </div>
                 </div>
@@ -122,12 +123,19 @@ if (!isset($_SESSION["user"])) {
         $("button#submit").on({
           "click": function () {
             $.ajax({
-              url: "./campagne_T.php",
+              url: "../makePdf.php",
               method: "GET",
               data: {
+                id: $("input[type='hidden']").val(),
+                send: 'true',
                 message: $('#summernote').summernote('code'),
                 sujet: $("input[name='sujet']").val(),
                 to: $("input[name='to']").val()
+              },
+              success: function (data) {
+                if (data == "ok") {
+                  alert("Le mail a été envoyé avec succès")
+                }
               }
             })
           }
@@ -140,8 +148,8 @@ if (!isset($_SESSION["user"])) {
 
 </html>
 <?php
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
+/*
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $to = $_POST['to'];
   $sujet = $_POST['sujet'];
   $message = $_POST['message'];
@@ -156,7 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit'])) {
   // Récupérer les informations de base de données
   include("sender.php");
 
-  send_mail($to, $sujet, getEmail($_GET["id"])["nom"], getEmail($_GET["id"])["prenom"], $message);
+  send_mail($to, $sujet, "", "", $message, "../assets/docs/");
 }
-
+*/
 ?>

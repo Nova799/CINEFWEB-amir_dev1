@@ -8,7 +8,9 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 function send_mail($to, $nom, $prenom, $subject, $message, $attachmentFilePath = null){
-    $message = "Cher/Chère $nom $prenom, <br> $message";
+    if ($nom != "" && $prenom != "") {
+        $message = "Cher/Chère $nom $prenom, <br> $message";
+    }
 
     $mail = new PHPMailer(true);
 
