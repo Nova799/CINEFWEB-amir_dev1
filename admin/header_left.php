@@ -45,6 +45,8 @@
                      <li class="nav-item"><a class="nav-link" href="addFormation.php">Ajouter une formation</a></li>
                      <li class="nav-item"><a class="nav-link" href="addUser.php">Ajouter un utilisateur</a></li>
                      <li class="nav-item"><a class="nav-link" href="newsletter.php">Liste de diffusion</a></li>
+                     <li class="nav-item"><a class="nav-link" href="./msgerie.php">Messagerie express</a></li>
+                     <li class="nav-item"><a class="nav-link" href="#">Historique des mails</a></li>
                      <li class="nav-item"><a class="nav-link" href="campagne.php">Campagne</a></li>
                      <li class="nav-item d-none"><a class="nav-link " href="pages/forms/basic_elements.html">Nos newletters</a></li>
                  </ul>
