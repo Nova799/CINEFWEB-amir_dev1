@@ -57,7 +57,7 @@ if (!isset($_SESSION["user"])) {
                               <input type="search" id="searchInput" placeholder="Recherche..."
                                 class='form-control form-control-sm'>
                               <br>
-                              <h4 class=""> Liste des Personnes s'étant abonné </h4>
+                              <!-- <h4 class=""> Liste des Personnes s'étant abonné </h4> -->
 
 
                               <div class="tab-content tab-content-basic">
@@ -78,6 +78,9 @@ if (!isset($_SESSION["user"])) {
 
                                               </div>
                                               <div class="table-responsive  mt-1">
+                                                <h3 class="text-center">
+                                                  Liste des abonnés au newsletter
+                                                </h3>
                                                 <table class="table select-table">
                                                   <thead>
                                                     <tr>

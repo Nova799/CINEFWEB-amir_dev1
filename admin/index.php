@@ -147,6 +147,9 @@ if (!isset($_SESSION["user"])) {
                                               <div class="d-sm-flex justify-content-between align-items-start">
                                               </div>
                                               <div class="table-responsive  mt-1">
+                                                <h3 class="text-center">
+                                                  Liste des formulaires de recueils des attentes reçues
+                                                </h3>
                                                 <table class="table select-table">
                                                   <thead>
                                                     <tr>
@@ -218,14 +221,14 @@ if (!isset($_SESSION["user"])) {
                                                           </td>
                                                           <td class='text-center pointer'>
                                                             <a href="#"
-                                                              class='text-<?php if($row['isChanged'] == 1 && $row['canChange'] == 0){ ?>danger<?php } else{ ?>secondary modif<?php } ?>'
+                                                              class='text-<?php if ($row['isChanged'] == 1 && $row['canChange'] == 0) { ?>danger<?php } else { ?>secondary modif<?php } ?>'
                                                               title="<?= $row["id"] ?>">
                                                               <h2 class="mdi mdi-pen"></h2>
                                                             </a>
                                                           </td>
                                                           <td class='text-center pointer'>
-                                                            <a href="./msgerie.php?table=nom_table&id=<?= $row["id"] ?>" target ="_blank"
-                                                              class='text-secondary'>
+                                                            <a href="./msgerie.php?table=nom_table&id=<?= $row["id"] ?>"
+                                                              target="_blank" class='text-secondary'>
                                                               <h2 class="mdi mdi-send"></h2>
                                                             </a>
                                                             <!-- <div class="badge badge-opacity-success">Completed</div> -->
