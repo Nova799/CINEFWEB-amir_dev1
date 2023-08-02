@@ -16,6 +16,7 @@ if (!isset($_SESSION["user"])) {
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Dashboard | Mail Sender</title>
 
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <?php include('layout_link_css.php') ?>
 
 </head>
@@ -117,8 +118,22 @@ if (!isset($_SESSION["user"])) {
     <!-- container-scroller -->
 
     <?php include('layout_link_js.php') ?>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
       $(document).ready(function () {
+        var emails = [];
+        $.ajax({
+          url: "./getEmails.php",
+          success: function (data) {
+            data = JSON.parse(data);
+            emails = data['emails'];
+
+        $("input[type='email']").autocomplete({
+          source: emails,
+          length: 1
+        })
+          }
+        })
         $('#summernote').summernote();
         $("button#submit").on({
           "click": function () {

@@ -121,10 +121,10 @@ if (!isset($_SESSION["user"])) {
                                                       if (file_exists("suscribers.csv")) {
                                                         unlink("suscribers.csv");
                                                       }
-                                                      file_put_contents("suscribers.csv", "id,nom,prenom,email,phone,confirmed");
+                                                      file_put_contents("suscribers.csv", "id,nom,prenom,email,phone,entreprise,confirmed");
                                                       $res = mysqli_query($conn, "SELECT * FROM newsletters");
                                                       while ($row = mysqli_fetch_assoc($res)) {
-                                                        file_put_contents("suscribers.csv", file_get_contents("suscribers.csv") . "\n" . $row['id'] . "," . $row['nom'] . "," . $row['prenom'] . "," . $row['email'] . "," . $row['phone'] . "," . $row["confirmed"]);
+                                                        file_put_contents("suscribers.csv", file_get_contents("suscribers.csv") . "\n" . $row['id'] . "," . $row['nom'] . "," . $row['prenom'] . "," . $row['email'] . "," . $row['phone'] . "," . $row['entreprise'] . "," . $row["confirmed"]);
                                                       }
                                                       while ($row = mysqli_fetch_assoc($result)) {
                                                         $nbr++;

@@ -63,7 +63,7 @@ session_start();
                       <button class="btn btn-dark btn-lg btn-block" type="submit" name='sub'>Se connecter</button>
                     </div>
 
-                    <a class="small text-muted" href="#!">Mot de passe oublié ?</a>
+                    <a class="small text-muted" href="forgotPass.php">Mot de passe oublié ?</a>
                   </form>
 
                 </div>

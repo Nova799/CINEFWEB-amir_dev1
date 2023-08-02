@@ -27,6 +27,7 @@ function send_mail($to, $nom, $prenom, $subject, $message, $attachmentFilePath =
 
         $mail->setFrom('kouakanou.casanova@pigierbenin.com', 'CINEF SAS Formation');
         $mail->addAddress($to);
+        $mail->AddReplyTo('info@cinef-bj.com', 'CINEF SAS');
 
         $mail->isHTML(true);
         $mail->Subject = $subject;
@@ -44,6 +45,7 @@ function send_mail($to, $nom, $prenom, $subject, $message, $attachmentFilePath =
         // return false;
     }
 }
+
 function send_mail_at($to, $nom, $prenom, $subject, $message, $attachmentFilePath = null, $date, $heure){
     // Date et heure d'envoi souhaitées
     $envoi = strtotime("$date $heure");
