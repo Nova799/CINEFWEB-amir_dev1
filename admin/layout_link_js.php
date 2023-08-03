@@ -40,9 +40,24 @@
                     ['table', ['table']],
                     ['link', ['link']],
                     ['picture', ['picture']],
-                    ['codeview', ['codeview']],
+                    // ['codeview', ['codeview']],
                 ],
                 lang: 'fr-FR' // Langue de l'éditeur (facultatif)
             });
         });
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+<script>
+//   $(document).ready(function() {
+    // var message = "Hello, world!";
+    // var key = "0000";
+
+    // Chiffrement avec AES
+    // var encryptedMessage = CryptoJS.AES.encrypt(message, key).toString();
+    // console.log("Message chiffré :", encryptedMessage);
+
+    // Déchiffrement
+    // var decryptedMessage = CryptoJS.AES.decrypt(encryptedMessage, key).toString(CryptoJS.enc.Utf8);
+    // console.log("Message déchiffré :", decryptedMessage);
+//   });
+</script>

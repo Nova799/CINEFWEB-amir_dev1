@@ -227,7 +227,7 @@ if (!isset($_SESSION["user"])) {
                                                             </a>
                                                           </td>
                                                           <td class='text-center pointer'>
-                                                            <a href="./msgerie.php?table=nom_table&id=<?= $row["id"] ?>"
+                                                            <a href="./share.php?table=nom_table&id=<?= $row["id"] ?>"
                                                               target="_blank" class='text-secondary'>
                                                               <h2 class="mdi mdi-send"></h2>
                                                             </a>

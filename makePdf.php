@@ -2,9 +2,10 @@
 require(realpath($_SERVER["DOCUMENT_ROOT"]) . '/CINEFWEB/config/conn.php');
 require(realpath($_SERVER["DOCUMENT_ROOT"]) . '/CINEFWEB/admin/sender.php');
 require(realpath($_SERVER["DOCUMENT_ROOT"]) . '/CINEFWEB/pdf.php');
-if (isset($_GET['id'])) {
+var_dump($_POST);
+if (isset($_POST['id']) && $_POST['id'] > 1) {
     $conn = conn();
-    $row = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM nom_table WHERE id = " . $_GET["id"]));
+    $row = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM nom_table WHERE id = " . $_POST["id"]));
 
     $formation = $row["formation"] == "" ? "Vide" : $row["formation"];
     $nom = $row["nom"] == "" ? "Vide" : $row["nom"];
@@ -251,9 +252,9 @@ if (isset($_GET['id'])) {
                         <div class="input-div">
                             <p>
                             <ul class="list_obj">
-                              <li>'.$objectif1.'</li>
-                              <li>'.$objectif2.'</li>
-                              <li>'.$objectif3.' </li>
+                              <li>' . $objectif1 . '</li>
+                              <li>' . $objectif2 . '</li>
+                              <li>' . $objectif3 . ' </li>
                             </ul>
                           </p>
                         </div>
@@ -301,12 +302,29 @@ if (isset($_GET['id'])) {
 
     // Envoi du mail
     // send_mail($email, $nom, '', "Reponse au formulaire", "recevez une copie du formulaire remplie sous forme de pdf", $file_name);
-    if ($_GET["send"] == "true") {
-        send_mail($_GET["to"], "", "", $_GET["sujet"], $_GET["message"], $path_to_file_pdf);
+    if ($_POST["send"] == "true") {
+        send_mail($_POST["to"], "", "", $_POST["sujet"], $_POST["message"], $path_to_file_pdf);
     }
-    echo "here";
 } else {
-    echo "nothing";
+    $subject = $_POST["sujet"];
+    $message = $_POST["message"];
+    $to = $_POST["to"];
+    echo $to . "\n";
+    echo "message = " . $message . "\n";
+    $conn = conn();
+    $attachmentFilePath = ''; // Définir une valeur par défaut pour éviter une erreur si aucun fichier n'est téléchargé
+    if (isset($_FILES["fichier"]) && $_FILES["fichier"]["error"] === UPLOAD_ERR_OK) {
+        $tmpFilePath = $_FILES["fichier"]["tmp_name"];
+        $uploadDir = realpath($_SERVER["DOCUMENT_ROOT"]) . '/CINEFWEB/assets/docs/';
+        $filename = $_FILES["fichier"]["name"];
+        $attachmentFilePath = $uploadDir . $filename;
+        if (move_uploaded_file($tmpFilePath, $attachmentFilePath)) {
+            send_mail($to, $nom, $prenom, $subject, $message, $attachmentFilePath);
+        }
+    } else {
+        send_mail($to, $nom, $prenom, $subject, $message);
+    }
 }
+
 
 ?>

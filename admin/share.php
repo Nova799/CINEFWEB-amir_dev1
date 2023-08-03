@@ -146,29 +146,23 @@ if (!isset($_SESSION["user"])) {
         $("button#submit").on({
           "click": function (e) {
             e.preventDefault();
-            var formData = new FormData();
-            formData.append('message', $('#summernote').summernote('code'));
-            formData.append('sujet', $("input[name='sujet']").val());
-            formData.append('to', $("input[name='to']").val());
-
-            // Ajoutez le fichier sélectionné au formData s'il en existe un
-            var fileInput = $("input[name='fichier']")[0].files[0];
-            if (fileInput) {
-              formData.append('fichier', fileInput);
+            var formData = {};
+            if ($("input[name='id']").val() && $("input[name='id']").val() != '') {
+              formData['id'] = $("input[name='id']").val();
             }
+            formData['send'] = 'true';
+            formData['message'] = $('#summernote').summernote('code');
+            formData['sujet'] = $("input[name='sujet']").val();
+            formData['to'] = $("input[name='to']").val();
 
             $.ajax({
-              url: "./msgerie_T.php",
-              method: "POST", // Utilisez la méthode POST pour envoyer les fichiers
+              url: "../makePdf.php",
+              method: "POST",
               data: formData,
-              processData: false,
-              contentType: false,
-              success: function (response) {
-                // Traitement de la réponse du serveur en cas de succès
-                console.log(response);
+              success: function (data) {
+                  alert("Le mail a été envoyé avec succès");
               },
               error: function (xhr, status, error) {
-                // Traitement en cas d'erreur
                 console.error(error);
               }
             });
@@ -181,3 +175,24 @@ if (!isset($_SESSION["user"])) {
 </body>
 
 </html>
+<?php
+/*
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  $to = $_POST['to'];
+  $sujet = $_POST['sujet'];
+  $message = $_POST['message'];
+  include(realpath($_SERVER["DOCUMENT_ROOT"]) . '/CINEFWEB/config/conn.php');
+  $conn = conn();
+
+  // Vérifier la connexion
+  if (!$conn) {
+    die("Erreur de connexion à la base de données: " . mysqli_connect_error());
+  }
+
+  // Récupérer les informations de base de données
+  include("sender.php");
+
+  send_mail($to, $sujet, "", "", $message, "../assets/docs/");
+}
+*/
+?>
